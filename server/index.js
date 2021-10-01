@@ -5,6 +5,8 @@ const dotenv = require("dotenv");
 const port = 5000;
 
 global.access_token = "";
+global.refresh_token = "";
+global.expires_in = 0;
 
 dotenv.config();
 
@@ -68,13 +70,15 @@ app.get("/auth/callback", (req, res) => {
   request.post(authOptions, function (error, response, body) {
     if (!error && response.statusCode === 200) {
       access_token = body.access_token;
+      refresh_token = body.refresh_token;
+      expires_in = body.expires_in;
       res.redirect("/");
     }
   });
 });
 
 app.get("/auth/token", (req, res) => {
-  res.json({ access_token: access_token });
+  res.json({ access_token: access_token, refresh_token: refresh_token });
 });
 
 app.listen(port, () => {

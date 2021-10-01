@@ -126,7 +126,11 @@ function WebPlayback(props) {
             </div>
           </div>
         </div>
-        <ShuffleControls nextTrack={nextTrack} currentTrack={current_track} />
+        <ShuffleControls
+          nextTrack={nextTrack}
+          currentTrack={current_track}
+          token={props.token}
+        />
       </>
     );
   }

@@ -21,8 +21,55 @@ const SkipTrack = (nextTrack, track) => {
   }
 };
 
-function ShuffleControls({ nextTrack, currentTrack }) {
+const genreOptions = [
+  ["rock", 1],
+  ["pop", 1],
+  ["punk", 1],
+  ["acoustic", 1],
+  ["alternative", 1],
+  ["ambient", 1],
+  ["blues", 1],
+  ["classical", 1],
+  ["chill", 1],
+  ["comedy", 1],
+  ["country", 1],
+  ["dance", 1],
+  ["disco", 1],
+  ["electronic", 1],
+  ["folk", 1],
+  ["drum-and-bass", 1],
+  ["dub", 1],
+  ["funk", 1],
+  ["gospel", 1],
+  ["garage", 1],
+  ["heavy-metal", 1],
+  ["hip-hop", 1],
+  ["house", 1],
+  ["indie", 1],
+  ["jazz", 1],
+  ["metal", 1],
+  ["new-age", 1],
+  ["opera", 1],
+  ["r-n-b", 1],
+  ["reggae", 1],
+  ["rock-n-roll", 1],
+  ["romance", 1],
+  ["ska", 1],
+  ["soul", 1],
+  ["soundtracks", 1],
+  ["synth-pop", 1],
+  ["techno", 1],
+  ["world-music", 1],
+  ["trip-hop", 1],
+  ["work-out", 1],
+];
+
+// for debugging
+var skipCount = 0;
+
+function ShuffleControls({ nextTrack, currentTrack, token }) {
   const [skip, setSkip] = useState(false);
+  const [genres, setGenres] = useState(genreOptions);
 
   //find current track in storage
   var trackHistory = JSON.parse(myStorage.getItem("ShufflePlusTrackHistory"));
@@ -32,7 +79,8 @@ function ShuffleControls({ nextTrack, currentTrack }) {
     if (track != null && track.songId != prevTrackId) {
       // check if track was played in last week
       if (skip) {
-        console.log("SKIPPED SONG");
+        skipCount++;
+        console.log("SKIPPED SONGs = " + skipCount);
         SkipTrack(nextTrack, track);
       }
 
@@ -69,10 +117,17 @@ function ShuffleControls({ nextTrack, currentTrack }) {
       </div>
       <div className="controls-container-item">
         <div className="controls-content">
-          <h3>Some control here:</h3>
-          <button className="controls-button" type="button" onClick={() => {}}>
-            NOT Working
-          </button>
+          <h3>Include/exclude genres:</h3>
+          {genres.map((g, i) => (
+            <button
+              type="button"
+              key={i}
+              onClick={() => {}}
+              className={g[(i, 1)] ? "genre-button" : "genre-button-disabled"}
+            >
+              {g[(i, 0)]}
+            </button>
+          ))}
         </div>
       </div>
     </div>
