@@ -10,8 +10,8 @@ global.expires_in = 0;
 
 dotenv.config();
 
-var spotify_client_id = process.env.SPOTIFY_CLIENT_ID;
-var spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET;
+var spotify_client_id = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
+var spotify_client_secret = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
 
 var spotify_redirect_uri = "http://localhost:3000/auth/callback";
 
