@@ -17,8 +17,8 @@ Once you have created your app, create a file called `.env` in the root folder
 of the repository with your Spotify credentials:
 
 ```bash
-SPOTIFY_CLIENT_ID='my_client_id'
-SPOTIFY_CLIENT_SECRET='my_client_secret'
+REACT_APP_SPOTIFY_CLIENT_ID='my_client_id'
+REACT_APP_SPOTIFY_CLIENT_SECRET='my_client_secret'
 ```
 
 ## Installation

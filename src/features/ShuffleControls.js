@@ -80,7 +80,7 @@ function ShuffleControls({ nextTrack, currentTrack, token }) {
       // check if track was played in last week
       if (skip) {
         skipCount++;
-        console.log("SKIPPED SONGs = " + skipCount);
+        console.log("SKIPPED SONG's = " + skipCount);
         SkipTrack(nextTrack, track);
       }
 
@@ -98,6 +98,13 @@ function ShuffleControls({ nextTrack, currentTrack, token }) {
     prevTrackId = currentTrack.id;
     SaveTrack(currentTrack);
   }
+
+  useEffect(() => {
+    // getEnabledGenres(()=>{});
+    // get artist id from current track
+    // get artist with id to get genres[]
+    // if it contains included genres play track, else skip track.
+  }, [genres]);
 
   return (
     <div className="controls-container">
@@ -122,8 +129,11 @@ function ShuffleControls({ nextTrack, currentTrack, token }) {
             <button
               type="button"
               key={i}
-              onClick={() => {}}
-              className={g[(i, 1)] ? "genre-button" : "genre-button-disabled"}
+              onClick={() => {
+                g[(i, 1)] = !g[(i, 1)];
+                setGenres([...genres]);
+              }}
+              className={g[(i, 1)] ? "genres-btn" : "genres-btn btn-disabled"}
             >
               {g[(i, 0)]}
             </button>

@@ -9,26 +9,12 @@ var spotify_client_secret = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
 function App() {
   const [token, setToken] = useState("");
   const [refreshToken, setRefreshToken] = useState("");
-  const [expiresIn, setExpiresIn] = useState(3600);
-
-  useEffect(() => {
-    async function getToken() {
-      const response = await fetch("/auth/token");
-      const json = await response.json();
-      setToken(json.access_token);
-      setRefreshToken(json.refresh_token);
-    }
-
-    console;
-    getToken();
-    //startTimer();
-    setInterval(() => refreshAccessToken(), expiresIn * 1000);
-  }, []);
 
   const refreshAccessToken = () => {
-    console.log("run refresh");
-    if (refreshToken != "") {
-      console.log("refreshAccessToken run");
+    console.log(`run refresh: ${refreshToken}`);
+    if (refreshToken !== "") {
+      console.log("refresh token: ", refreshToken);
+      console.log("refreshAccessToken running fetch");
       fetch("https://accounts.spotify.com/api/token", {
         method: "POST",
         body: new URLSearchParams({
@@ -46,13 +32,32 @@ function App() {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log("returned data; ", data);
+          if (data.error) {
+            console.log("returned data error: ", data);
+            return;
+          }
+          console.log("returned data: ", data);
           setToken(data.access_token);
-          setExpiresIn(data.expires_in);
+          //setExpiresIn(data.expires_in);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.log("refresh token error: ", error));
     }
   };
+
+  useEffect(() => {
+    async function getToken() {
+      const response = await fetch("/auth/token");
+      const json = await response.json();
+      setToken(json.access_token);
+      await setRefreshToken(json.refresh_token);
+      setInterval(refreshAccessToken, 50 * 60000); // 50 mins
+      //setInterval(refreshAccessToken, 4000); // 50 mins
+    }
+
+    console;
+    getToken();
+    // when access token expires, get new token
+  }, []);
 
   return (
     <>

@@ -6,7 +6,6 @@ const port = 5000;
 
 global.access_token = "";
 global.refresh_token = "";
-global.expires_in = 0;
 
 dotenv.config();
 
@@ -71,7 +70,7 @@ app.get("/auth/callback", (req, res) => {
     if (!error && response.statusCode === 200) {
       access_token = body.access_token;
       refresh_token = body.refresh_token;
-      expires_in = body.expires_in;
+      //expires_in = body.expires_in;
       res.redirect("/");
     }
   });

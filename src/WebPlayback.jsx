@@ -46,7 +46,7 @@ function WebPlayback(props) {
         if (!state) {
           return;
         }
-
+        //console.log("state: ", state);
         setTrack(state.track_window.current_track);
         setPaused(state.paused);
 
@@ -57,7 +57,8 @@ function WebPlayback(props) {
 
       player.connect();
     };
-  }, []);
+    console.log("props.token: ", props.token);
+  }, [props.token]);
 
   const nextTrack = () => {
     player.nextTrack();
@@ -92,37 +93,38 @@ function WebPlayback(props) {
               <div className="now-playing__artist">
                 {current_track.artists[0].name}
               </div>
+              <div className="btn-spotify-container">
+                <button
+                  className="btn-spotify"
+                  onClick={() => {
+                    player.previousTrack();
+                  }}
+                >
+                  <i className="fas fa-backward"></i>
+                </button>
 
-              <button
-                className="btn-spotify"
-                onClick={() => {
-                  player.previousTrack();
-                }}
-              >
-                <i className="fas fa-backward"></i>
-              </button>
+                <button
+                  className="btn-spotify"
+                  onClick={() => {
+                    player.togglePlay();
+                  }}
+                >
+                  {is_paused ? (
+                    <i className="fas fa-play"></i>
+                  ) : (
+                    <i className="fas fa-pause"></i>
+                  )}
+                </button>
 
-              <button
-                className="btn-spotify"
-                onClick={() => {
-                  player.togglePlay();
-                }}
-              >
-                {is_paused ? (
-                  <i className="fas fa-play"></i>
-                ) : (
-                  <i className="fas fa-pause"></i>
-                )}
-              </button>
-
-              <button
-                className="btn-spotify"
-                onClick={() => {
-                  player.nextTrack();
-                }}
-              >
-                <i className="fas fa-forward"></i>
-              </button>
+                <button
+                  className="btn-spotify"
+                  onClick={() => {
+                    player.nextTrack();
+                  }}
+                >
+                  <i className="fas fa-forward"></i>
+                </button>
+              </div>
             </div>
           </div>
         </div>

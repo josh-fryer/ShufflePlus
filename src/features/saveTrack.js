@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 const myStorage = window.localStorage;
 
@@ -43,12 +43,11 @@ export const SaveTrack = (track) => {
   } else {
     // update track history
     const trackHistoryParse = JSON.parse(trackHistory);
-    //console.log("Parsed track history : ", trackHistoryParse);
 
     const foundTrack = trackHistoryParse.songs.findIndex(
       (x) => x.songId === track.id
     );
-    console.log("found track: ", foundTrack);
+    //console.log("found track: ", foundTrack);
 
     // find if track already exists in trackHistory
     if (foundTrack >= 0) {
