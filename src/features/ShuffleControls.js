@@ -68,10 +68,10 @@ const genreOptions = [
 // for debugging
 var skipCount = 0;
 
-function ShuffleControls({ nextTrack, currentTrack }) {
+function ShuffleControls({ nextTrack, currentTrack, token: receivedToken }) {
   const [skip, setSkip] = useState(false);
   const [genres, setGenres] = useState(genreOptions);
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(receivedToken);
   const [artistGenres, setArtistGenres] = useState([]);
 
   const getToken = () => {
@@ -79,7 +79,7 @@ function ShuffleControls({ nextTrack, currentTrack }) {
       .then((res) => res.json())
       .then((data) => {
         setToken(data.access_token);
-        console.log("data from set token: ", data.access_token);
+        //console.log("data from set token: ", data.access_token);
       })
       .catch((err) => console.log(err));
   };
@@ -102,31 +102,40 @@ function ShuffleControls({ nextTrack, currentTrack }) {
         return arr[2];
       };
 
-      getToken(); // get latest token
-      console.log("token after getToken(): ", token);
-
-      // get artist with id to get artist's genres[]
-      fetch(`https://api.spotify.com/v1/artists/${getArtistId()}`, {
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-Type": "application/json",
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log("DATA: ", data);
-          setArtistGenres(data.genres);
+      const getArtist = () => {
+        // get artist with id to get artist's genres[]
+        fetch(`https://api.spotify.com/v1/artists/${getArtistId()}`, {
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
         })
-        .catch((err) => console.log(err));
+          .then((res) => res.json())
+          .then((data) => {
+            //console.log("DATA: ", data);
+            setArtistGenres(data.genres);
+          })
+          .catch((err) => console.log(err));
+      };
 
-      console.log("artist Genres: ", artistGenres);
-      //if it contains included genres play track, else skip track.
-      if (artistGenres.length > 0) {
+      getToken(); // get latest token
+      getArtist();
+      //console.log("token after getToken(): ", token);
+      console.log("current track: ", currentTrack);
+      console.log(
+        `artist ${currentTrack.artists[0].name} Genres: `,
+        artistGenres
+      );
+
+      // if it contains included genres play track, else skip track.
+      if (artistGenres.length > 0 && artistGenres !== undefined) {
         disabledGenres.forEach((g) => {
           for (let i = 0; i < artistGenres.length; i++) {
             if (g === artistGenres[i]) {
-              console.log("Genre filter match found. Skip Track");
-              //nextTrack();
+              console.log(
+                `Genre filter match found. Skip: ${currentTrack.name}`
+              );
+              nextTrack();
             }
           }
         });

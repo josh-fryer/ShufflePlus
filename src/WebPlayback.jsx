@@ -73,6 +73,7 @@ function WebPlayback(props) {
   }, []);
 
   const nextTrack = () => {
+    console.log(`next track called`);
     player.nextTrack();
   };
 
@@ -140,7 +141,11 @@ function WebPlayback(props) {
             </div>
           </div>
         </div>
-        <ShuffleControls nextTrack={nextTrack} currentTrack={current_track} />
+        <ShuffleControls
+          nextTrack={nextTrack}
+          currentTrack={current_track}
+          token={token}
+        />
       </>
     );
   }
