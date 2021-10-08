@@ -11,7 +11,6 @@ function App() {
   const [refreshToken, setRefreshToken] = useState("");
 
   const refreshAccessToken = () => {
-    console.log(`run refresh: ${refreshToken}`);
     if (refreshToken !== "") {
       console.log("refresh token: ", refreshToken);
       console.log("refreshAccessToken running fetch");
@@ -36,7 +35,7 @@ function App() {
             console.log("returned data error: ", data);
             return;
           }
-          console.log("returned data: ", data);
+          console.log("new access token: ", data.access_token);
           setToken(data.access_token);
           //setExpiresIn(data.expires_in);
         })
@@ -45,18 +44,26 @@ function App() {
   };
 
   useEffect(() => {
-    async function getToken() {
-      const response = await fetch("/auth/token");
-      const json = await response.json();
-      setToken(json.access_token);
-      await setRefreshToken(json.refresh_token);
-      setInterval(refreshAccessToken, 50 * 60000); // 50 mins
-      //setInterval(refreshAccessToken, 4000); // 50 mins
-    }
-
     console;
-    getToken();
-    // when access token expires, get new token
+    // get token
+    fetch("/auth/token")
+      .then((res) => res.json())
+      .then((data) => {
+        setToken(data.access_token);
+        setRefreshToken(data.refresh_token);
+      });
+
+    // refresh access token or it expires in an hour
+    const getNewToken = () => {
+      fetch("/auth/new-token")
+        .then((res) => res.json())
+        .then((data) => {
+          setToken(data.access_token);
+        })
+        .catch((err) => console.log("error getting new token: ", err));
+    };
+
+    setInterval(getNewToken, 50 * 60000); // 50 mins
   }, []);
 
   return (

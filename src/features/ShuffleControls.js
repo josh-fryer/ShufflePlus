@@ -1,3 +1,4 @@
+import { check } from "prettier";
 import React, { useState, useEffect } from "react";
 
 import { SaveTrack } from "./saveTrack";
@@ -22,54 +23,116 @@ const SkipTrack = (nextTrack, track) => {
 };
 
 const genreOptions = [
-  ["rock", 1],
-  ["pop", 1],
-  ["punk", 1],
-  ["acoustic", 1],
-  ["alternative", 1],
-  ["ambient", 1],
-  ["blues", 1],
-  ["classical", 1],
-  ["chill", 1],
-  ["comedy", 1],
-  ["country", 1],
-  ["dance", 1],
-  ["disco", 1],
-  ["electronic", 1],
-  ["folk", 1],
-  ["drum-and-bass", 1],
-  ["dub", 1],
-  ["funk", 1],
-  ["gospel", 1],
-  ["garage", 1],
-  ["heavy-metal", 1],
-  ["hip-hop", 1],
-  ["house", 1],
-  ["indie", 1],
-  ["jazz", 1],
-  ["metal", 1],
-  ["new-age", 1],
-  ["opera", 1],
-  ["r-n-b", 1],
-  ["reggae", 1],
-  ["rock-n-roll", 1],
-  ["romance", 1],
-  ["ska", 1],
-  ["soul", 1],
-  ["soundtracks", 1],
-  ["synth-pop", 1],
-  ["techno", 1],
-  ["world-music", 1],
-  ["trip-hop", 1],
-  ["work-out", 1],
+  ["rock", true],
+  ["pop", true],
+  ["punk", true],
+  ["acoustic", true],
+  ["alternative", true],
+  ["ambient", true],
+  ["blues", true],
+  ["classical", true],
+  ["chill", true],
+  ["comedy", true],
+  ["country", true],
+  ["dance", true],
+  ["disco", true],
+  ["electronic", true],
+  ["folk", true],
+  ["drum-and-bass", true],
+  ["dub", true],
+  ["funk", true],
+  ["gospel", true],
+  ["garage", true],
+  ["heavy-metal", true],
+  ["hip-hop", true],
+  ["house", true],
+  ["indie", true],
+  ["jazz", true],
+  ["metal", true],
+  ["new-age", true],
+  ["opera", true],
+  ["r-n-b", true],
+  ["reggae", true],
+  ["rock-n-roll", true],
+  ["romance", true],
+  ["ska", true],
+  ["soul", true],
+  ["soundtracks", true],
+  ["synth-pop", true],
+  ["techno", true],
+  ["world-music", true],
+  ["trip-hop", true],
+  ["work-out", true],
 ];
 
 // for debugging
 var skipCount = 0;
 
-function ShuffleControls({ nextTrack, currentTrack, token }) {
+function ShuffleControls({ nextTrack, currentTrack }) {
   const [skip, setSkip] = useState(false);
   const [genres, setGenres] = useState(genreOptions);
+  const [token, setToken] = useState("");
+  const [artistGenres, setArtistGenres] = useState([]);
+
+  const getToken = () => {
+    fetch("/auth/token")
+      .then((res) => res.json())
+      .then((data) => {
+        setToken(data.access_token);
+        console.log("data from set token: ", data.access_token);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const checkGenresFilter = () => {
+    //get Enabled Genres
+    const disabledGenres = genres
+      .filter((item) => {
+        if (item[1] === false) {
+          return item;
+        }
+      })
+      .map((item) => item[0]);
+
+    if (disabledGenres.length >= 1) {
+      // get artist id from current track
+      const getArtistId = () => {
+        let uri = currentTrack.artists[0].uri;
+        let arr = uri.split(":");
+        return arr[2];
+      };
+
+      getToken(); // get latest token
+      console.log("token after getToken(): ", token);
+
+      // get artist with id to get artist's genres[]
+      fetch(`https://api.spotify.com/v1/artists/${getArtistId()}`, {
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("DATA: ", data);
+          setArtistGenres(data.genres);
+        })
+        .catch((err) => console.log(err));
+
+      console.log("artist Genres: ", artistGenres);
+      //if it contains included genres play track, else skip track.
+      if (artistGenres.length > 0) {
+        disabledGenres.forEach((g) => {
+          for (let i = 0; i < artistGenres.length; i++) {
+            if (g === artistGenres[i]) {
+              console.log("Genre filter match found. Skip Track");
+              //nextTrack();
+            }
+          }
+        });
+      }
+    }
+  };
 
   //find current track in storage
   var trackHistory = JSON.parse(myStorage.getItem("ShufflePlusTrackHistory"));
@@ -94,17 +157,13 @@ function ShuffleControls({ nextTrack, currentTrack, token }) {
     currentTrack.id != prevTrackId &&
     Object.keys(currentTrack).length !== 0
   ) {
+    // skips song if song is from enabled genre
+    checkGenresFilter();
+
     // prevents loops from SDK
     prevTrackId = currentTrack.id;
     SaveTrack(currentTrack);
   }
-
-  useEffect(() => {
-    // getEnabledGenres(()=>{});
-    // get artist id from current track
-    // get artist with id to get genres[]
-    // if it contains included genres play track, else skip track.
-  }, [genres]);
 
   return (
     <div className="controls-container">
@@ -124,7 +183,10 @@ function ShuffleControls({ nextTrack, currentTrack, token }) {
       </div>
       <div className="controls-container-item">
         <div className="controls-content">
-          <h3>Include/exclude genres:</h3>
+          <h3>
+            Include/exclude genres:{" "}
+            <small>(min 1 genre must be included)</small>
+          </h3>
           {genres.map((g, i) => (
             <button
               type="button"

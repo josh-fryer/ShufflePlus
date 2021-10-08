@@ -51,10 +51,6 @@ export const SaveTrack = (track) => {
 
     // find if track already exists in trackHistory
     if (foundTrack >= 0) {
-      console.log(
-        "songs[foundTrack] before change: ",
-        trackHistoryParse.songs[foundTrack]
-      );
       trackHistoryParse.songs[foundTrack].playCounter += 1;
       trackHistoryParse.songs[foundTrack].datePlayed = dateToday;
 

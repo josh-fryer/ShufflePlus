@@ -15,6 +15,7 @@ function WebPlayback(props) {
   const [is_active, setActive] = useState(false);
   const [player, setPlayer] = useState(undefined);
   const [current_track, setTrack] = useState(track);
+  const [token, setToken] = useState(props.token);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -27,12 +28,23 @@ function WebPlayback(props) {
       const player = new window.Spotify.Player({
         name: "ShufflePlus Player",
         getOAuthToken: (cb) => {
-          cb(props.token);
+          cb(token);
         },
-        volume: 0.5,
       });
 
       setPlayer(player);
+
+      player.on("authentication_error", ({ message }) => {
+        console.error("Failed to authenticate", message);
+        console.log("trying new token");
+        fetch("/auth/token")
+          .then((res) => res.json())
+          .then((data) => setToken(data.access_token));
+      });
+
+      player.on("playback_error", ({ message }) => {
+        console.error("Failed to perform playback", message);
+      });
 
       player.addListener("ready", ({ device_id }) => {
         console.log("Ready with Device ID", device_id);
@@ -58,7 +70,7 @@ function WebPlayback(props) {
       player.connect();
     };
     console.log("props.token: ", props.token);
-  }, [props.token]);
+  }, []);
 
   const nextTrack = () => {
     player.nextTrack();
@@ -128,11 +140,7 @@ function WebPlayback(props) {
             </div>
           </div>
         </div>
-        <ShuffleControls
-          nextTrack={nextTrack}
-          currentTrack={current_track}
-          token={props.token}
-        />
+        <ShuffleControls nextTrack={nextTrack} currentTrack={current_track} />
       </>
     );
   }
