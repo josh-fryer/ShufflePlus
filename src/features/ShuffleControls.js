@@ -1,26 +1,9 @@
-import { check } from "prettier";
 import React, { useState, useEffect } from "react";
-
 import { SaveTrack } from "./saveTrack";
 
 const myStorage = window.localStorage;
 
 var prevTrackId = "";
-
-const SkipTrack = (nextTrack, track) => {
-  var dNow = new Date().getTime();
-
-  const week = 604800000; // a week in milliseconds
-
-  var trackD = new Date(track.datePlayed).getTime();
-
-  var weekAgo = dNow - week;
-
-  // within a week so, skip track
-  if (trackD > weekAgo) {
-    nextTrack();
-  }
-};
 
 const genreOptions = [
   ["rock", true],
@@ -38,54 +21,77 @@ const genreOptions = [
   ["disco", true],
   ["electronic", true],
   ["folk", true],
-  ["drum-and-bass", true],
+  ["drum and bass", true],
   ["dub", true],
   ["funk", true],
   ["gospel", true],
   ["garage", true],
-  ["heavy-metal", true],
-  ["hip-hop", true],
+  ["hip hop", true],
   ["house", true],
   ["indie", true],
   ["jazz", true],
   ["metal", true],
-  ["new-age", true],
+  ["new age", true],
   ["opera", true],
-  ["r-n-b", true],
+  ["r&b", true],
   ["reggae", true],
-  ["rock-n-roll", true],
-  ["romance", true],
+  ["rock and roll", true],
   ["ska", true],
   ["soul", true],
   ["soundtracks", true],
-  ["synth-pop", true],
   ["techno", true],
-  ["world-music", true],
-  ["trip-hop", true],
-  ["work-out", true],
+  ["world music", true],
 ];
 
 // for debugging
 var skipCount = 0;
 
-function ShuffleControls({ nextTrack, currentTrack, token: receivedToken }) {
+var skipTimeout = null;
+
+const skipTrack = (nextTrack, track) => {
+  var dNow = new Date().getTime();
+
+  const week = 604800000; // a week in milliseconds
+
+  var trackD = new Date(track.datePlayed).getTime();
+
+  var weekAgo = dNow - week;
+
+  // within a week so, skip track
+  if (trackD > weekAgo) {
+    console.log("skipping track played less than a week ago!: ", track);
+    skipCount++;
+    skipTimeout = setTimeout(nextTrack, 2000);
+  }
+};
+
+const ShuffleControls = ({
+  nextTrack,
+  currentTrack,
+  isPaused,
+  token: receivedToken,
+}) => {
   const [skip, setSkip] = useState(false);
-  const [genres, setGenres] = useState(genreOptions);
+  const [genres, setGenres] = useState(() => {
+    genreOptions.sort();
+    return genreOptions.map((subarr) => [...subarr]);
+  });
   const [token, setToken] = useState(receivedToken);
   const [artistGenres, setArtistGenres] = useState([]);
 
   const getToken = () => {
-    fetch("/auth/token")
+    return fetch("/auth/token")
       .then((res) => res.json())
-      .then((data) => {
-        setToken(data.access_token);
-        //console.log("data from set token: ", data.access_token);
-      })
       .catch((err) => console.log(err));
   };
 
+  const resetGenres = () => {
+    genreOptions.sort();
+    setGenres(genreOptions.map((subarr) => [...subarr]));
+  };
+
   const checkGenresFilter = () => {
-    //get Enabled Genres
+    //get disabled Genres
     const disabledGenres = genres
       .filter((item) => {
         if (item[1] === false) {
@@ -102,77 +108,137 @@ function ShuffleControls({ nextTrack, currentTrack, token: receivedToken }) {
         return arr[2];
       };
 
-      const getArtist = () => {
+      const getArtistGenres = (artistId) => {
         // get artist with id to get artist's genres[]
-        fetch(`https://api.spotify.com/v1/artists/${getArtistId()}`, {
+        return fetch(`https://api.spotify.com/v1/artists/${artistId}`, {
           headers: {
             Authorization: "Bearer " + token,
             "Content-Type": "application/json",
           },
         })
           .then((res) => res.json())
-          .then((data) => {
-            //console.log("DATA: ", data);
-            setArtistGenres(data.genres);
-          })
           .catch((err) => console.log(err));
       };
 
-      getToken(); // get latest token
-      getArtist();
-      //console.log("token after getToken(): ", token);
-      console.log("current track: ", currentTrack);
-      console.log(
-        `artist ${currentTrack.artists[0].name} Genres: `,
-        artistGenres
-      );
+      const startFetchCalls = async () => {
+        let tokenResult = await getToken(); // get latest token
+        setToken(tokenResult.access_token);
 
-      // if it contains included genres play track, else skip track.
-      if (artistGenres.length > 0 && artistGenres !== undefined) {
-        disabledGenres.forEach((g) => {
-          for (let i = 0; i < artistGenres.length; i++) {
-            if (g === artistGenres[i]) {
-              console.log(
-                `Genre filter match found. Skip: ${currentTrack.name}`
-              );
-              nextTrack();
-            }
-          }
-        });
-      }
+        let artistId = await getArtistId();
+        let artistGResult = await getArtistGenres(artistId);
+
+        setArtistGenres(artistGResult.genres);
+      };
+
+      startFetchCalls();
     }
   };
 
-  //find current track in storage
-  var trackHistory = JSON.parse(myStorage.getItem("ShufflePlusTrackHistory"));
-  if (trackHistory != null) {
-    const track = trackHistory.songs.find((x) => x.songId === currentTrack.id);
+  useEffect(() => {
+    console.log(
+      `artist ${currentTrack.artists[0].name} Genres: `,
+      artistGenres
+    );
 
-    if (track != null && track.songId != prevTrackId) {
-      // check if track was played in last week
-      if (skip) {
+    const disabledGenres = genres
+      .filter((item) => {
+        if (item[1] === false) {
+          return item;
+        }
+      })
+      .map((item) => item[0]);
+
+    // if it contains included genres play track, else skip track.
+    if (artistGenres.length > 0 && artistGenres !== undefined) {
+      var next = false;
+
+      disabledGenres.forEach((g) => {
+        for (let i = 0; i < artistGenres.length; i++) {
+          if (artistGenres[i].includes(g)) {
+            console.log(`Matched Genre ${g}. Skip: ${currentTrack.name}`);
+            next = true;
+            break;
+          }
+        }
+      });
+
+      if (next) {
         skipCount++;
-        console.log("SKIPPED SONG's = " + skipCount);
-        SkipTrack(nextTrack, track);
+        skipTimeout = setTimeout(nextTrack, 2000);
+      }
+    }
+  }, [artistGenres]);
+
+  useEffect(() => {
+    // reset used timeout
+    if (skipTimeout != null) {
+      clearTimeout(skipTimeout);
+      skipTimeout = null;
+    }
+
+    if (
+      currentTrack.id != "" &&
+      currentTrack.id != prevTrackId &&
+      Object.keys(currentTrack).length !== 0
+    ) {
+      // find current track in storage
+      var trackHistory = JSON.parse(
+        myStorage.getItem("ShufflePlusTrackHistory")
+      );
+      if (trackHistory != null) {
+        const track = trackHistory.songs.find(
+          (x) => x.songId === currentTrack.id
+        );
+
+        if (track != null && track.songId != prevTrackId) {
+          // check if track was played in last week
+          if (skip) {
+            skipTrack(nextTrack, track);
+          }
+
+          // ### MORE CONTROL FUNCTIONS HERE ###
+        }
       }
 
-      // ### MORE CONTROL FUNCTIONS HERE ###
+      // prevents loops from SDK
+      prevTrackId = currentTrack.id;
+
+      // check if skip timeout has not already been started
+      if (skipTimeout == null) {
+        // skips song if song is from enabled genre
+        checkGenresFilter();
+      }
+
+      // save or upate track
+      SaveTrack(currentTrack);
     }
-  }
+  }, [currentTrack.id]);
 
-  // Save or update track
-  if (
-    currentTrack.name != "" &&
-    currentTrack.id != prevTrackId &&
-    Object.keys(currentTrack).length !== 0
-  ) {
-    // skips song if song is from enabled genre
-    checkGenresFilter();
+  useEffect(() => {
+    // stop skipping timeout if user pauses
+    if (isPaused && skipTimeout != null) {
+      clearTimeout(skipTimeout);
+      skipTimeout = null;
+    }
+  }, [isPaused]);
 
-    // prevents loops from SDK
-    prevTrackId = currentTrack.id;
-    SaveTrack(currentTrack);
-  }
+  const handleGenreClick = (i) => {
+    const disabledGenres = genres
+      .filter((item) => {
+        if (item[1] === false) {
+          return item;
+        }
+      })
+      .map((item) => item[0]);
+
+    if (disabledGenres.length == genres.length - 1) {
+      alert("Must have mininmum one genre enabled");
+      return;
+    }
+    // map to new array to avoid mutation.
+    // if genre equal to index of clicked return it with bool toggled. else => genre
+    setGenres(genres.map((g, j) => (j !== i ? g : [g[0], !g[1]])));
+  };
 
   return (
     <div className="controls-container">
@@ -193,26 +259,37 @@ function ShuffleControls({ nextTrack, currentTrack, token: receivedToken }) {
       <div className="controls-container-item">
         <div className="controls-content">
           <h3>
-            Include/exclude genres:{" "}
+            include or exclude artists from these genres:{" "}
             <small>(min 1 genre must be included)</small>
           </h3>
-          {genres.map((g, i) => (
+
+          <div className="genres-btn-bar">
             <button
               type="button"
-              key={i}
-              onClick={() => {
-                g[(i, 1)] = !g[(i, 1)];
-                setGenres([...genres]);
-              }}
-              className={g[(i, 1)] ? "genres-btn" : "genres-btn btn-disabled"}
+              className="reset-btn"
+              onClick={() => resetGenres()}
             >
-              {g[(i, 0)]}
+              RESET
             </button>
-          ))}
+          </div>
+          <div className="genres-btn-container">
+            {genres.map((g, i) => (
+              <button
+                type="button"
+                key={i}
+                onClick={() => {
+                  handleGenreClick(i);
+                }}
+                className={g[(i, 1)] ? "genres-btn" : "genres-btn btn-disabled"}
+              >
+                {g[(i, 0)]}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default ShuffleControls;

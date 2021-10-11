@@ -30,6 +30,7 @@ function WebPlayback(props) {
         getOAuthToken: (cb) => {
           cb(token);
         },
+        volume: 1,
       });
 
       setPlayer(player);
@@ -37,7 +38,7 @@ function WebPlayback(props) {
       player.on("authentication_error", ({ message }) => {
         console.error("Failed to authenticate", message);
         console.log("trying new token");
-        fetch("/auth/token")
+        fetch("/auth/new-token")
           .then((res) => res.json())
           .then((data) => setToken(data.access_token));
       });
@@ -58,6 +59,7 @@ function WebPlayback(props) {
         if (!state) {
           return;
         }
+
         //console.log("state: ", state);
         setTrack(state.track_window.current_track);
         setPaused(state.paused);
@@ -69,11 +71,11 @@ function WebPlayback(props) {
 
       player.connect();
     };
-    console.log("props.token: ", props.token);
-  }, []);
+    //console.log("props.token: ", props.token);
+  }, [token]);
 
   const nextTrack = () => {
-    console.log(`next track called`);
+    //console.log(`next track called`);
     player.nextTrack();
   };
 
@@ -144,6 +146,7 @@ function WebPlayback(props) {
         <ShuffleControls
           nextTrack={nextTrack}
           currentTrack={current_track}
+          isPaused={is_paused}
           token={token}
         />
       </>

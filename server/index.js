@@ -84,7 +84,7 @@ app.get("/auth/new-token", (req, res) => {
   var authOptions = {
     url: "https://accounts.spotify.com/api/token",
     form: {
-      refresh_token: refresh_token.toString(),
+      refresh_token: refresh_token,
       grant_type: "refresh_token",
     },
     headers: {
