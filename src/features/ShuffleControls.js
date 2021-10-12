@@ -78,6 +78,7 @@ const ShuffleControls = ({
   });
   const [token, setToken] = useState(receivedToken);
   const [artistGenres, setArtistGenres] = useState([]);
+  const [showReset, setShowReset] = useState(false);
 
   const getToken = () => {
     return fetch("/auth/token")
@@ -222,6 +223,17 @@ const ShuffleControls = ({
     }
   }, [isPaused]);
 
+  useEffect(() => {
+    // show reset button if there are disabled genres
+    const findDisabledGenre = genres.find((i) => i[1] === false);
+    console.log(findDisabledGenre);
+    if (findDisabledGenre) {
+      setShowReset(true);
+    } else {
+      setShowReset(false);
+    }
+  }, [genres]);
+
   const handleGenreClick = (i) => {
     const disabledGenres = genres
       .filter((item) => {
@@ -258,20 +270,18 @@ const ShuffleControls = ({
       </div>
       <div className="controls-container-item">
         <div className="controls-content">
-          <h3>
-            include or exclude artists from these genres:{" "}
-            <small>(min 1 genre must be included)</small>
-          </h3>
-
-          <div className="genres-btn-bar">
-            <button
-              type="button"
-              className="reset-btn"
-              onClick={() => resetGenres()}
-            >
-              RESET
-            </button>
-          </div>
+          <h3>Include or exclude artists with these genres:</h3>
+          {showReset && (
+            <div className="genres-btn-bar">
+              <button
+                type="button"
+                className="reset-btn"
+                onClick={() => resetGenres()}
+              >
+                RESET
+              </button>
+            </div>
+          )}
           <div className="genres-btn-container">
             {genres.map((g, i) => (
               <button

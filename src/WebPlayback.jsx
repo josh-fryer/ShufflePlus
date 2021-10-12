@@ -28,6 +28,7 @@ function WebPlayback(props) {
       const player = new window.Spotify.Player({
         name: "ShufflePlus Player",
         getOAuthToken: (cb) => {
+          console.log("GET TOKEN cb");
           cb(token);
         },
         volume: 1,
@@ -95,7 +96,7 @@ function WebPlayback(props) {
   } else {
     return (
       <>
-        <div className="container">
+        <div className="player-container">
           <div className="main-wrapper">
             <img
               src={current_track.album.images[0].url}

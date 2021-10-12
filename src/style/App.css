@@ -1,3 +1,114 @@
+:root {
+  --header-bg: #1c1c1c;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 body {
   background-color: #3a3a3a;
+}
+
+.black {
+  color: black;
+}
+
+.footer {
+  background-color: var(--header-bg);
+  color: white;
+  margin-top: auto;
+}
+
+.footer-wrapper {
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  max-width: 1140px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.github-btn {
+  font-size: 39px;
+  color: rgb(255, 255, 255);
+  transition: all 0.1s;
+}
+
+.github-btn:hover {
+  color: rgb(173, 173, 173);
+}
+
+.twitter-link {
+  color: white;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.twitter-link:hover {
+  color: rgb(173, 173, 173);
+}
+
+.fa-stack {
+  font-size: 20px;
+}
+.fa-stack i {
+  vertical-align: middle;
+}
+.fa-twitter {
+  font-size: 26px;
+}
+.header {
+  background-color: var(--header-bg);
+  color: white;
+  position: relative;
+}
+
+.header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0;
+  padding-bottom: 0;
+  max-width: 1140px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.header-icon {
+  font-size: 25px;
+  padding-right: 15px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: bold;
+  padding: 15px;
+}
+
+.spotifyLink {
+  color: white;
+  text-decoration: none;
+  padding: 3px;
+}
+
+.spotifyLink:hover {
+  background-color: #4b4b4b;
+  border-radius: 8px;
+}
+
+@media only screen and (max-width: 768px) {
+  .title {
+    padding: 6px;
+    font-size: 25px;
+  }
 }

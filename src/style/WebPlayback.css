@@ -39,20 +39,29 @@ button {
   height: 100%;
   margin: 0 auto;
   justify-content: center;
-  position: relative;
   width: 80%;
   z-index: 1;
   color: white;
 }
 
 .container {
-  align-items: center;
+  align-items: flex-start;
   display: flex;
-  flex: 1;
   justify-content: center;
   height: 100%;
   width: 100%;
-  background-color: rgb(32, 32, 32);
+  background-color: rgb(46, 46, 46);
+  margin: 0;
+  padding: 0;
+}
+
+.player-container {
+  align-items: flex-start;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  background-color: rgb(46, 46, 46);
   margin: 0;
   padding: 0;
 }
@@ -159,6 +168,7 @@ img {
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-evenly;
+  margin-bottom: 20px;
 }
 
 .controls-container-item {
@@ -274,4 +284,23 @@ img {
   flex-flow: row-reverse;
   flex-grow: 1;
   width: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .main-wrapper {
+    flex-wrap: wrap;
+    text-align: center;
+    margin: 0px;
+    padding-top: 37.5px;
+    padding-bottom: 37.5px;
+  }
+
+  .now-playing__cover {
+    margin: 0px;
+  }
+
+  .now-playing__side {
+    margin: 10px 0px 0px 0px;
+  }
 }
