@@ -12,9 +12,9 @@ dotenv.config();
 var spotify_client_id = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
 var spotify_client_secret = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
 
-//var spotify_redirect_uri = "http://localhost:3000/auth/callback";
-var spotify_redirect_uri =
-  "https://shuffleplus-c524f1.netlify.app/auth/callback";
+var spotify_redirect_uri = "http://localhost:3000/auth/callback";
+// var spotify_redirect_uri =
+//   "https://shuffleplus-c524f1.netlify.app/auth/callback";
 
 var generateRandomString = function (length) {
   var text = "";
