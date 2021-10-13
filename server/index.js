@@ -12,7 +12,8 @@ dotenv.config();
 var spotify_client_id = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
 var spotify_client_secret = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
 
-var spotify_redirect_uri = "http://localhost:3000/auth/callback";
+//var spotify_redirect_uri = "http://localhost:3000/auth/callback";
+var spotify_redirect_uri = "http://192.168.1.180:3000/auth/callback";
 
 var generateRandomString = function (length) {
   var text = "";
@@ -100,6 +101,7 @@ app.get("/auth/new-token", (req, res) => {
 
   request.post(authOptions, function (error, response, body) {
     if (!error && response.statusCode === 200) {
+      console.log("Successfully refreshed token!");
       access_token = body.access_token;
       res.json({ access_token: access_token });
     } else {
@@ -111,3 +113,5 @@ app.get("/auth/new-token", (req, res) => {
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
 });
+
+app.use(express.static(path.join(__dirname, "../build")));

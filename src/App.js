@@ -47,7 +47,12 @@ function App() {
   useEffect(() => {
     console;
     // get token
-    fetch("/auth/token")
+    fetch("/auth/token", {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         setToken(data.access_token);
