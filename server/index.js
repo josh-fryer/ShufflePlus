@@ -13,7 +13,8 @@ var spotify_client_id = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
 var spotify_client_secret = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
 
 //var spotify_redirect_uri = "http://localhost:3000/auth/callback";
-var spotify_redirect_uri = "http://192.168.1.180:3000/auth/callback";
+var spotify_redirect_uri =
+  "https://shuffleplus-c524f1.netlify.app/auth/callback";
 
 var generateRandomString = function (length) {
   var text = "";
@@ -27,6 +28,8 @@ var generateRandomString = function (length) {
 };
 
 var app = express();
+
+app.use(express.static(path.join(__dirname, "../build")));
 
 app.get("/auth/login", (req, res) => {
   var scope = "streaming user-read-email user-read-private";
@@ -113,5 +116,3 @@ app.get("/auth/new-token", (req, res) => {
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
 });
-
-app.use(express.static(path.join(__dirname, "../build")));
