@@ -29,10 +29,7 @@ var generateRandomString = function (length) {
 
 var app = express();
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
-//app.use(express.static(path.join(__dirname, "../build")));
+app.use(express.static(path.join(__dirname, "../build")));
 
 app.get("/auth/login", (req, res) => {
   var scope = "streaming user-read-email user-read-private";
