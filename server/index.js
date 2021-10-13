@@ -29,7 +29,10 @@ var generateRandomString = function (length) {
 
 var app = express();
 
-app.use(express.static(path.join(__dirname, "../build")));
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
+//app.use(express.static(path.join(__dirname, "../build")));
 
 app.get("/auth/login", (req, res) => {
   var scope = "streaming user-read-email user-read-private";
@@ -113,6 +116,10 @@ app.get("/auth/new-token", (req, res) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}`);
+app.listen(process.env.PORT || port, () => {
+  console.log(`Listening at port`);
 });
+
+// app.listen(port, () => {
+//   console.log(`Listening at http://localhost:${port}`);
+// })
