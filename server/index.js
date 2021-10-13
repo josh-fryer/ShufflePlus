@@ -1,8 +1,9 @@
 const express = require("express");
 const request = require("request");
 const dotenv = require("dotenv");
+const path = require("path");
 
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 global.access_token = "";
 global.refresh_token = "";
@@ -28,8 +29,6 @@ var generateRandomString = function (length) {
 };
 
 var app = express();
-
-app.use(express.static(path.join(__dirname, "../build")));
 
 app.get("/auth/login", (req, res) => {
   var scope = "streaming user-read-email user-read-private";
@@ -113,10 +112,20 @@ app.get("/auth/new-token", (req, res) => {
   });
 });
 
-app.listen(process.env.PORT || port, () => {
-  console.log(`Listening at port`);
-});
+// app.listen(process.env.PORT || port, () => {
+//   console.log(`Listening at port`);
+// });
 
-// app.listen(port, () => {
-//   console.log(`Listening at http://localhost:${port}`);
-// })
+// serve static assets if in production
+if (process.env.NODE_ENV === "production") {
+  //set static folder
+  app.use(express.static("../build"));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "build", "index.html"));
+  });
+}
+
+app.listen(port, () => {
+  console.log(`Listening at http://localhost:${port}`);
+});
