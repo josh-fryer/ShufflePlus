@@ -84,9 +84,8 @@ body {
   margin-right: auto;
 }
 
-.header-icon {
-  font-size: 25px;
-  padding-right: 15px;
+.modalList li:not(:last-child) {
+  padding-bottom: 10px;
 }
 
 .title {

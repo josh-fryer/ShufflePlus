@@ -29,6 +29,20 @@ function WebPlayback(props) {
         name: "ShufflePlus Player",
         getOAuthToken: (cb) => {
           console.log("GET TOKEN cb");
+          // get token
+          fetch("/auth/token", {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              setToken(data.access_token);
+              setRefreshToken(data.refresh_token);
+            })
+            .catch((err) => console.log("failed to get token in cb: " + err));
+
           cb(token);
         },
         volume: 1,

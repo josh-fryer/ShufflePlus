@@ -62,7 +62,12 @@ function App() {
 
     // refresh access token or it expires in an hour
     const getNewToken = () => {
-      fetch("/auth/new-token")
+      fetch("/auth/new-token", {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      })
         .then((res) => res.json())
         .then((data) => {
           setToken(data.access_token);
