@@ -59,7 +59,7 @@ const skipTrack = (nextTrack, track) => {
 
   // within a week so, skip track
   if (trackD > weekAgo) {
-    console.log("skipping track played less than a week ago!: ", track);
+    console.log(`skipping > ${track.name}, played less than a week ago!`);
     skipCount++;
     skipTimeout = setTimeout(nextTrack, 2000);
   }
@@ -153,13 +153,16 @@ const ShuffleControls = ({
     if (artistGenres.length > 0 && artistGenres !== undefined) {
       var next = false;
 
-      disabledGenres.forEach((g) => {
+      disabledGenres.some((g) => {
         for (let i = 0; i < artistGenres.length; i++) {
           if (artistGenres[i].includes(g)) {
             console.log(`Matched Genre ${g}. Skip: ${currentTrack.name}`);
             next = true;
-            break;
+            return next;
           }
+        }
+        if (next) {
+          console.error("Next is true. loop did not break!");
         }
       });
 
@@ -177,41 +180,46 @@ const ShuffleControls = ({
       skipTimeout = null;
     }
 
+    let trackIndex = -1;
+
     if (
       currentTrack.id != "" &&
       currentTrack.id != prevTrackId &&
       Object.keys(currentTrack).length !== 0
     ) {
-      // find current track in storage
+      // prevents loops from SDK
+      prevTrackId = currentTrack.id;
+
       var trackHistory = JSON.parse(
         myStorage.getItem("ShufflePlusTrackHistory")
       );
+
       if (trackHistory != null) {
-        const track = trackHistory.songs.find(
+        // find current track in storage
+        trackIndex = trackHistory.songs.findIndex(
           (x) => x.songId === currentTrack.id
         );
 
-        if (track != null && track.songId != prevTrackId) {
+        if (trackIndex > -1) {
+          const track = trackHistory.songs[trackIndex];
+
           // check if track was played in last week
           if (skip) {
             skipTrack(nextTrack, track);
           }
-
           // ### MORE CONTROL FUNCTIONS HERE ###
         }
       }
 
-      // prevents loops from SDK
-      prevTrackId = currentTrack.id;
-
-      // check if skip timeout has not already been started
+      // the "SKIP" functions that do not rely on finding saved track
+      // check if skip timeout has not already been started by previous control checks
       if (skipTimeout == null) {
         // skips song if song is from enabled genre
         checkGenresFilter();
       }
 
       // save or upate track
-      SaveTrack(currentTrack);
+      SaveTrack(currentTrack, trackIndex);
     }
   }, [currentTrack.id]);
 
@@ -226,7 +234,6 @@ const ShuffleControls = ({
   useEffect(() => {
     // show reset button if there are disabled genres
     const findDisabledGenre = genres.find((i) => i[1] === false);
-    console.log(findDisabledGenre);
     if (findDisabledGenre) {
       setShowReset(true);
     } else {

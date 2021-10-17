@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: "Montserrat", sans-serif;
+  font-family: Montserrat, sans-serif, "Helvetica Neue", Helvetica, Arial;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

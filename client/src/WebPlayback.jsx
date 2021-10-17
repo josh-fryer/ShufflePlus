@@ -39,7 +39,6 @@ function WebPlayback(props) {
             .then((res) => res.json())
             .then((data) => {
               setToken(data.access_token);
-              setRefreshToken(data.refresh_token);
             })
             .catch((err) => console.log("failed to get token in cb: " + err));
 
@@ -101,7 +100,10 @@ function WebPlayback(props) {
           <div className="main-wrapper">
             <b>
               {" "}
-              Instance not active. Transfer your playback using your Spotify app{" "}
+              Transfer your playback to ShufflePlus from the device list in the
+              desktop app.
+              <br />
+              Press play on a playlist/track before transferring.
             </b>
           </div>
         </div>

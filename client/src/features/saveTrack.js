@@ -14,7 +14,9 @@ const trackHistoryRef = {
   ],
 };
 
-export const SaveTrack = (track) => {
+const updateTrack = () => {};
+
+export const SaveTrack = (track, trackIndex) => {
   //myStorage.removeItem("ShufflePlusTrackHistory");
   var trackHistory = myStorage.getItem("ShufflePlusTrackHistory");
 
@@ -34,7 +36,7 @@ export const SaveTrack = (track) => {
       songs: [prepTrack],
     };
 
-    console.log("new track history: ", newTrackHistory);
+    console.log("new track history saved: ", newTrackHistory);
 
     myStorage.setItem(
       "ShufflePlusTrackHistory",
@@ -43,28 +45,31 @@ export const SaveTrack = (track) => {
   } else {
     // update track history
     const trackHistoryParse = JSON.parse(trackHistory);
+    let foundTrackIndex;
 
-    const foundTrack = trackHistoryParse.songs.findIndex(
-      (x) => x.songId === track.id
-    );
-    //console.log("found track: ", foundTrack);
-
-    // find if track already exists in trackHistory
-    if (foundTrack >= 0) {
-      trackHistoryParse.songs[foundTrack].playCounter += 1;
-      trackHistoryParse.songs[foundTrack].datePlayed = dateToday;
-
-      console.log(
-        "trackHistoryParse after increase playCounter: ",
-        trackHistoryParse
+    if (trackIndex < 0) {
+      // no trackIndex passed in so run find
+      foundTrackIndex = trackHistoryParse.songs.findIndex(
+        (x) => x.songId === track.id
       );
+    } else {
+      foundTrackIndex = trackIndex;
+    }
+
+    // find track then update its details
+    if (foundTrackIndex >= 0) {
+      const trackObj = trackHistoryParse.songs[foundTrackIndex];
+      trackObj.playCounter += 1;
+      trackObj.datePlayed = dateToday;
+
+      console.log("trackHistoryParse after update: ", trackHistoryParse);
 
       myStorage.setItem(
         "ShufflePlusTrackHistory",
         JSON.stringify(trackHistoryParse)
       );
     } else {
-      // add track to track history
+      // add new track to track history
       trackHistoryParse.songs.push(prepTrack);
 
       console.log("added song to track history: ", trackHistoryParse);
