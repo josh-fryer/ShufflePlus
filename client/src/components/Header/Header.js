@@ -23,7 +23,7 @@ const Header = ({ hasToken }) => {
       <div className="header-wrapper">
         <div className="header-title">ShufflePlus</div>
         <div className="btns-group">
-          {isLoggedIn && (
+          {/* {isLoggedIn && (
             <IconButton
               sx={{
                 color: "white",
@@ -36,7 +36,7 @@ const Header = ({ hasToken }) => {
             >
               <SettingsIcon />
             </IconButton>
-          )}
+          )} */}
           <IconButton
             sx={{
               color: "white",

@@ -219,7 +219,7 @@ img {
   color: white;
   text-decoration: none;
   font-weight: bold;
-  transition: all 0.2s;
+  transition: all 0.1s;
   padding: 3px;
   font-size: 17px;
 }
@@ -229,13 +229,13 @@ img {
 }
 
 .btn-disabled {
-  opacity: 50%;
+  opacity: 0.5;
   background-color: #838383;
 }
 
 .btn-disabled:hover {
   background-color: #838383;
-  opacity: 70%;
+  opacity: 0.7;
 }
 
 .reset-btn {

@@ -31,7 +31,7 @@ export const SettingsDialog = ({ open, setOpen }) => {
       </DialogTitle>
       <DialogContent>
         <ul>
-          <li>megaBytes = </li>
+          <li></li>
         </ul>
       </DialogContent>
     </Dialog>
