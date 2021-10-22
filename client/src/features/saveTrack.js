@@ -1,4 +1,4 @@
-import React from "react";
+import { saveTrackHistory } from "../services/localStorage";
 
 const myStorage = window.localStorage;
 
@@ -36,12 +36,8 @@ export const SaveTrack = (track, trackIndex) => {
       songs: [prepTrack],
     };
 
+    saveTrackHistory(newTrackHistory);
     console.log("new track history saved: ", newTrackHistory);
-
-    myStorage.setItem(
-      "ShufflePlusTrackHistory",
-      JSON.stringify(newTrackHistory)
-    );
   } else {
     // update track history
     const trackHistoryParse = JSON.parse(trackHistory);
@@ -62,22 +58,13 @@ export const SaveTrack = (track, trackIndex) => {
       trackObj.playCounter += 1;
       trackObj.datePlayed = dateToday;
 
+      saveTrackHistory(trackHistoryParse);
       console.log("trackHistoryParse after update: ", trackHistoryParse);
-
-      myStorage.setItem(
-        "ShufflePlusTrackHistory",
-        JSON.stringify(trackHistoryParse)
-      );
     } else {
       // add new track to track history
       trackHistoryParse.songs.push(prepTrack);
-
+      saveTrackHistory(trackHistoryParse);
       console.log("added song to track history: ", trackHistoryParse);
-
-      myStorage.setItem(
-        "ShufflePlusTrackHistory",
-        JSON.stringify(trackHistoryParse)
-      );
     }
   }
 };

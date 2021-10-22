@@ -50,7 +50,7 @@ span.kofitext {
 a.kofi-button {
   box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
   line-height: 36px !important;
-  min-width: 150px;
+  min-width: 140px;
   display: inline-block !important;
   background-color: #29abe0;
   padding: 2px 12px !important;

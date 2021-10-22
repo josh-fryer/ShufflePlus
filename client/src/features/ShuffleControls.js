@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { SaveTrack } from "./saveTrack";
+import * as storage from "../services/localStorage";
 
-const myStorage = window.localStorage;
+var myStorage;
 
 var prevTrackId = "";
 
@@ -79,6 +80,10 @@ const ShuffleControls = ({
   const [token, setToken] = useState(receivedToken);
   const [artistGenres, setArtistGenres] = useState([]);
   const [showReset, setShowReset] = useState(false);
+
+  useEffect(() => {
+    myStorage = storage.isStorageSupported();
+  }, []);
 
   const getToken = () => {
     return fetch("/auth/token")
@@ -190,25 +195,30 @@ const ShuffleControls = ({
       // prevents loops from SDK
       prevTrackId = currentTrack.id;
 
-      var trackHistory = JSON.parse(
-        myStorage.getItem("ShufflePlusTrackHistory")
-      );
-
-      if (trackHistory != null) {
-        // find current track in storage
-        trackIndex = trackHistory.songs.findIndex(
-          (x) => x.songId === currentTrack.id
+      if (myStorage != false) {
+        var trackHistory = JSON.parse(
+          myStorage.getItem("ShufflePlusTrackHistory")
         );
 
-        if (trackIndex > -1) {
-          const track = trackHistory.songs[trackIndex];
+        if (trackHistory != null) {
+          // find current track in storage
+          trackIndex = trackHistory.songs.findIndex(
+            (x) => x.songId === currentTrack.id
+          );
 
-          // check if track was played in last week
-          if (skip) {
-            skipTrack(nextTrack, track);
+          if (trackIndex > -1) {
+            const track = trackHistory.songs[trackIndex];
+
+            // check if track was played in last week
+            if (skip) {
+              skipTrack(nextTrack, track);
+            }
+            // ### MORE CONTROL FUNCTIONS HERE ###
           }
-          // ### MORE CONTROL FUNCTIONS HERE ###
         }
+
+        // save or upate track
+        SaveTrack(currentTrack, trackIndex);
       }
 
       // the "SKIP" functions that do not rely on finding saved track
@@ -217,9 +227,6 @@ const ShuffleControls = ({
         // skips song if song is from enabled genre
         checkGenresFilter();
       }
-
-      // save or upate track
-      SaveTrack(currentTrack, trackIndex);
     }
   }, [currentTrack.id]);
 

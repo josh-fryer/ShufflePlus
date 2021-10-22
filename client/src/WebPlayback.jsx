@@ -86,7 +86,7 @@ function WebPlayback(props) {
       player.connect();
     };
     //console.log("props.token: ", props.token);
-  }, [token]);
+  }, []);
 
   const nextTrack = () => {
     //console.log(`next track called`);

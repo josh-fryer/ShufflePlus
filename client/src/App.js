@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import WebPlayback from "./WebPlayback";
 import Login from "./Login";
-import Header from "./components/Header";
+import Header from "./components/Header/Header";
 import Footer from "./components/Footer";
 import "./style/App.css";
 
 var spotify_client_id = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
 var spotify_client_secret = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
 
-function App() {
+const App = () => {
   const [token, setToken] = useState("");
   const [refreshToken, setRefreshToken] = useState("");
 
@@ -80,7 +80,7 @@ function App() {
 
   return (
     <>
-      <Header />
+      <Header hasToken={token == "" ? false : true} />
       {token === "" ? (
         <Login />
       ) : (
@@ -91,6 +91,6 @@ function App() {
       <Footer />
     </>
   );
-}
+};
 
 export default App;

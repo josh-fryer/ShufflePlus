@@ -74,7 +74,6 @@ button {
 }
 
 .now-playing__cover {
-  border-radius: 8px;
   float: left;
   margin-right: 10px;
   text-align: right;
@@ -99,7 +98,7 @@ button {
 }
 
 .btn-spotify {
-  background-color: #44c767;
+  background-color: var(--spotify-primary);
   border-radius: 50%;
   border: 1px solid #18ab29;
   /* display: inline-block; */
@@ -118,6 +117,7 @@ button {
 .btn-spotify:active {
   position: relative;
   top: 1px;
+  font-size: 17px;
 }
 
 .btn-spotify:hover {
@@ -181,7 +181,7 @@ img {
 }
 
 .controls-button {
-  background-color: #44c767;
+  background-color: var(--spotify-primary);
   border-radius: 28px;
   border: 1px solid #18ab29;
   display: inline-block;
@@ -196,7 +196,7 @@ img {
 }
 
 .controls-button:hover {
-  background: #3eb35d;
+  background: #189544;
 }
 
 .controls-button:active {
@@ -213,7 +213,7 @@ img {
 
 .genres-btn {
   display: inline-flex;
-  background-color: #44c767;
+  background-color: var(--spotify-primary);
   border: 2px solid;
   cursor: pointer;
   color: white;
@@ -225,12 +225,8 @@ img {
 }
 
 .genres-btn:hover {
-  background-color: #44c767a2;
+  background-color: #189544;
 }
-
-/* .genres-btn:active {
-  background-color: #44c767;
-} */
 
 .btn-disabled {
   opacity: 50%;
