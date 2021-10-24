@@ -275,7 +275,11 @@ const ShuffleControls = ({
             className="controls-button"
             type="button"
             onClick={() => {
-              setSkip(!skip);
+              if (myStorage !== false) {
+                setSkip(!skip);
+              } else {
+                alert("Your browser does not support this feature");
+              }
             }}
           >
             {skip ? "ON" : "OFF"}

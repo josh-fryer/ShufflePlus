@@ -1,5 +1,7 @@
+import { duration } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import ShuffleControls from "./features/ShuffleControls";
+import TrackProgressBar from "./features/TrackProgressBar";
 import "./style/WebPlayback.css";
 
 const track = {
@@ -16,6 +18,11 @@ function WebPlayback(props) {
   const [player, setPlayer] = useState(undefined);
   const [current_track, setTrack] = useState(track);
   const [token, setToken] = useState(props.token);
+  const [trackProgress, setTrackProgress] = useState({
+    duration: 0,
+    position: 0,
+    timestamp: 0,
+  });
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -77,6 +84,12 @@ function WebPlayback(props) {
         //console.log("state: ", state);
         setTrack(state.track_window.current_track);
         setPaused(state.paused);
+        const progressObj = {
+          duration: state.duration,
+          position: state.position,
+          timestamp: state.timestamp,
+        };
+        setTrackProgress(progressObj);
 
         player.getCurrentState().then((state) => {
           !state ? setActive(false) : setActive(true);
@@ -125,6 +138,12 @@ function WebPlayback(props) {
               <div className="now-playing__artist">
                 {current_track.artists[0].name}
               </div>
+              <TrackProgressBar
+                duration={trackProgress.duration}
+                position={trackProgress.position}
+                isPaused={is_paused}
+                isActive={is_active}
+              />
               <div className="btn-spotify-container">
                 <button
                   className="btn-spotify"

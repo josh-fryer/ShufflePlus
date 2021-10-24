@@ -120,10 +120,6 @@ button {
   font-size: 17px;
 }
 
-.btn-spotify:hover {
-  background-color: #3eb35d;
-}
-
 .btn-login {
   background-color: #44c767;
   border-radius: 35px;
@@ -270,6 +266,13 @@ img {
   flex-flow: row-reverse;
   flex-grow: 1;
   width: 100%;
+}
+
+.track-time {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: small;
+  margin-bottom: 10px;
 }
 
 @media only screen and (max-width: 768px) {
