@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Slider from "@mui/material/Slider";
 
+var addSecond = null;
+var newPosition = 0;
+var i = 0; // for debugging
+
 const TrackProgressBar = ({ duration, position, isPaused, isActive }) => {
   const [displayPosition, setDisplayPosition] = useState("00:00");
+  const [livePosition, setLivePosition] = useState(position);
   const [displayDuration, setDisplayDuration] = useState("00:00");
-
-  console.log("TrackProgressBar: ", { duration: duration, position: position });
 
   const formatTime = (ms) => {
     var seconds = Math.floor((ms / 1000) % 60);
@@ -23,14 +26,57 @@ const TrackProgressBar = ({ duration, position, isPaused, isActive }) => {
   };
 
   useEffect(() => {
-    // stop timer here
+    if (addSecond != null) {
+      clearInterval(addSecond);
+      addSecond = null;
+      newPosition = 0;
+    }
+
+    if (!isPaused && isActive) {
+      // start timer here to add second in ms every second to position
+      i += 1;
+      addSecond = setInterval(() => {
+        if (newPosition > 0) {
+          newPosition += 1000;
+        } else {
+          newPosition = livePosition + 1000;
+        }
+
+        // check if newPosition is not over the duration of its track
+        if (newPosition <= duration) {
+          //console.log(i + ") newPosition ", newPosition);
+          setDisplayPosition(formatTime(newPosition));
+        }
+      }, 1000);
+    }
+  }, [livePosition]);
+
+  useEffect(() => {
+    if (addSecond != null) {
+      clearInterval(addSecond);
+      addSecond = null;
+      newPosition = 0;
+    }
+
     setDisplayPosition(formatTime(position));
-    // start timer here to add second in ms every second to position
+    setLivePosition(position);
   }, [position]);
 
   useEffect(() => {
     setDisplayDuration(formatTime(duration));
   }, [duration]);
+
+  useEffect(() => {
+    // if paused then stop timeout
+    if (isPaused || !isActive) {
+      console.log("isActive: ", isActive);
+      if (addSecond != null) {
+        clearInterval(addSecond);
+        addSecond = null;
+        newPosition = 0;
+      }
+    }
+  }, [isPaused, isActive]);
 
   return (
     <div className="track-time">
