@@ -1,6 +1,7 @@
 # ShufflePlus
 
 This app provides controls for shuffle playback on Spotify.
+Currently in development.
 I bulit this to make spotify shuffle more random and not repeat tracks as often on my large playlists.
 
 ## Using your own credentials

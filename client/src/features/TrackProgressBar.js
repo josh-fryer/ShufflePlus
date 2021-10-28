@@ -5,6 +5,12 @@ var addSecond = null;
 var newPosition = 0;
 var i = 0; // for debugging
 
+const resetInterval = (interval) => {
+  clearInterval(interval);
+  addSecond = null;
+  newPosition = 0;
+};
+
 const TrackProgressBar = ({ duration, position, isPaused, isActive }) => {
   const [displayPosition, setDisplayPosition] = useState("00:00");
   const [livePosition, setLivePosition] = useState(position);
@@ -27,9 +33,7 @@ const TrackProgressBar = ({ duration, position, isPaused, isActive }) => {
 
   useEffect(() => {
     if (addSecond != null) {
-      clearInterval(addSecond);
-      addSecond = null;
-      newPosition = 0;
+      resetInterval(addSecond);
     }
 
     if (!isPaused && isActive) {
@@ -53,9 +57,7 @@ const TrackProgressBar = ({ duration, position, isPaused, isActive }) => {
 
   useEffect(() => {
     if (addSecond != null) {
-      clearInterval(addSecond);
-      addSecond = null;
-      newPosition = 0;
+      resetInterval(addSecond);
     }
 
     setDisplayPosition(formatTime(position));
@@ -69,11 +71,8 @@ const TrackProgressBar = ({ duration, position, isPaused, isActive }) => {
   useEffect(() => {
     // if paused then stop timeout
     if (isPaused || !isActive) {
-      console.log("isActive: ", isActive);
       if (addSecond != null) {
-        clearInterval(addSecond);
-        addSecond = null;
-        newPosition = 0;
+        resetInterval(addSecond);
       }
     }
   }, [isPaused, isActive]);
