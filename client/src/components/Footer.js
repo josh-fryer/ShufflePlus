@@ -1,11 +1,12 @@
 import React from "react";
 import KoFi from "./KoFi";
+import logo from "../assets/Spotify_Logo_RGB_Green.png";
 
 const Footer = () => {
   return (
     <div className="footer">
       <div className="footer-wrapper">
-        <div>Made by Josh Fryer.</div>
+        <div style={{ padding: 10 }}>Made by Josh Fryer.</div>
         <KoFi color="#29abe0" id="L3L7R7WE" label="Support this site" />
         <a
           className="twitter-link"
@@ -13,9 +14,9 @@ const Footer = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <span className="fa-stack fa-2x">
+          <span className="fa-stack fa-2x" style={{ padding: 10 }}>
             <i className="fas fa-circle fa-stack-2x"></i>
-            <i className="black fab fa-twitter fa-stack-1x fa-inverse"></i>
+            <i className="twitter-bird fab fa-twitter fa-stack-1x fa-inverse"></i>
           </span>
         </a>
         <a
@@ -32,8 +33,17 @@ const Footer = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Uses Spotify Api and player SDK
+          Uses Spotify API and Player SDK
         </a>
+        <img
+          src={logo}
+          alt="Spotify Logo"
+          style={{
+            height: 50,
+            padding: 25,
+            // spotify requires half of height for padding
+          }}
+        />
       </div>
     </div>
   );

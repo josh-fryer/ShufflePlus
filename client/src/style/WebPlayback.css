@@ -63,6 +63,7 @@ button {
 .now-playing__name {
   font-size: 1.5em;
   margin-bottom: 0.2em;
+  word-wrap: normal;
 }
 
 .now-playing__artist {
@@ -163,7 +164,7 @@ img {
   flex-shrink: 0;
   margin-top: 30px;
   min-width: 375px;
-  max-width: 35%;
+  max-width: 25%;
 }
 
 .controls-container-item h3 {
@@ -274,6 +275,15 @@ img {
   font-size: small;
   margin-bottom: 10px;
   justify-content: space-between;
+}
+
+.OpenSpotifyLink {
+  color: white;
+  text-decoration: none;
+}
+
+.OpenSpotifyLink:hover {
+  color: var(--spotify-primary);
 }
 
 @media only screen and (max-width: 768px) {

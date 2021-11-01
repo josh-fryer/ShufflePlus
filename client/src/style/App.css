@@ -8,36 +8,13 @@
   min-height: 100vh;
 }
 
-body {
-  background-color: #3a3a3a;
-}
-
-.black {
-  color: black;
-}
-
-.footer {
-  background-color: var(--header-bg);
-  color: white;
-  margin-top: auto;
-}
-
-.footer-wrapper {
-  flex-wrap: wrap;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  max-width: 1140px;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  margin-left: auto;
-  margin-right: auto;
+.twitter-bird {
+  color: var(--header-bg);
 }
 
 .github-btn {
   font-size: 39px;
+  padding: 10px;
   color: rgb(255, 255, 255);
   transition: all 0.1s;
 }
@@ -49,11 +26,11 @@ body {
 .twitter-link {
   color: white;
   text-decoration: none;
-  transition: all 0.2s;
+  transition: all 0.1s;
 }
 
 .twitter-link:hover {
-  color: rgb(173, 173, 173);
+  color: rgb(167, 167, 167);
 }
 
 .fa-stack {
@@ -68,7 +45,7 @@ body {
 
 /* ======== HEADER =======*/
 header {
-  background-color: var(--header-bg);
+  background-color: black;
   color: white;
   position: relative;
 }
@@ -96,7 +73,30 @@ header {
   padding: 15px;
 }
 
-.btns-group {
+.header-title a {
+  text-decoration: none;
+  color: white;
+}
+
+/* ======== Footer=======*/
+.footer {
+  background-color: black;
+  color: white;
+  margin-top: auto;
+}
+
+.footer-wrapper {
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  max-width: 1140px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* ======= LOGIN PAGE ==========  */
@@ -107,7 +107,7 @@ header {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  font-size: calc(8px + 2vmin);
+  font-size: calc(7px + 2vmin);
   color: white;
 }
 
@@ -116,7 +116,9 @@ header {
   margin-bottom: 35px;
   margin-top: 20px;
   padding-bottom: 12px;
-  width: fit-content;
+  width: -moz-max-content; /* Firefox/Gecko */
+  width: -webkit-max-content; /* Chrome */
+  width: intrinsic; /* Safari/WebKit uses a non-standard name */
   font-size: 35px;
   font-size: calc(16px + 3vw);
   text-align: center;
@@ -126,7 +128,8 @@ header {
 .login-content {
   padding-bottom: 20px;
   line-height: 1.3;
-  width: 60%;
+  width: 80%;
+  max-width: 1160px;
 }
 
 .login-content .subheading {
@@ -140,7 +143,7 @@ header {
 }
 .warning {
   border-radius: 8px;
-  border: 3px solid rgb(197 154 17);
+  border: 3px solid rgb(221 55 17);
   padding: 10px;
   line-height: 1.5;
   font-size: calc(6px + 2vmin);
@@ -148,13 +151,13 @@ header {
 /* ======================= */
 
 .spotifyLink {
+  padding: 10px;
   color: white;
   text-decoration: none;
-  padding: 3px;
 }
 
 .spotifyLink:hover {
-  background-color: #4b4b4b;
+  background-color: #4b4b4b93;
   border-radius: 8px;
 }
 

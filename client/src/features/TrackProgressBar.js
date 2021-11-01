@@ -13,7 +13,7 @@ const resetInterval = (interval) => {
 
 const TrackProgressBar = ({ duration, position, isPaused, isActive }) => {
   const [displayPosition, setDisplayPosition] = useState("00:00");
-  const [livePosition, setLivePosition] = useState(position);
+  const [livePosition, setLivePosition] = useState(0);
   const [displayDuration, setDisplayDuration] = useState("00:00");
 
   const formatTime = (ms) => {
@@ -30,6 +30,12 @@ const TrackProgressBar = ({ duration, position, isPaused, isActive }) => {
     }
     return timeStr;
   };
+
+  useEffect(() => {
+    return () => {
+      resetInterval(addSecond);
+    };
+  }, []);
 
   useEffect(() => {
     if (addSecond != null) {
@@ -50,6 +56,7 @@ const TrackProgressBar = ({ duration, position, isPaused, isActive }) => {
         if (newPosition <= duration) {
           //console.log(i + ") newPosition ", newPosition);
           setDisplayPosition(formatTime(newPosition));
+          setLivePosition(newPosition);
         }
       }, 1000);
     }
@@ -82,7 +89,7 @@ const TrackProgressBar = ({ duration, position, isPaused, isActive }) => {
       <Slider
         aria-label="time-indicator"
         size="small"
-        value={position}
+        value={livePosition}
         min={0}
         step={1}
         max={duration}

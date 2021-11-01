@@ -1,8 +1,10 @@
-import { duration } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import ShuffleControls from "./features/ShuffleControls";
 import TrackProgressBar from "./features/TrackProgressBar";
+import OpenSpotifyLink from "./components/track_link";
 import "./style/WebPlayback.css";
+import spotifyIcon from "./assets/Spotify_Icon_White.png";
+import explicitIcon from "./assets/19badge-dark.png";
 
 const track = {
   name: "",
@@ -15,9 +17,10 @@ const track = {
 function WebPlayback(props) {
   const [is_paused, setPaused] = useState(false);
   const [is_active, setActive] = useState(false);
-  const [player, setPlayer] = useState(undefined);
-  const [current_track, setTrack] = useState(track);
+  const [playerObj, setPlayerObj] = useState(undefined);
+  const [currentTrack, setTrack] = useState(track);
   const [token, setToken] = useState(props.token);
+  const [isExplicit, setIsExplicit] = useState(false);
   const [trackProgress, setTrackProgress] = useState({
     duration: 0,
     position: 0,
@@ -34,34 +37,56 @@ function WebPlayback(props) {
     window.onSpotifyWebPlaybackSDKReady = () => {
       const player = new window.Spotify.Player({
         name: "ShufflePlus Player",
-        getOAuthToken: (cb) => {
-          console.log("GET TOKEN cb");
-          // get token
-          fetch("/auth/token", {
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              setToken(data.access_token);
+        getOAuthToken: async (cb) => {
+          //console.log("GET TOKEN cb");
+
+          if (playerObj !== undefined) {
+            // player is already initaialised so token has expired. get new token:
+            console.log("get new token. player is defined.");
+            await fetch("/auth/new-token", {
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
             })
-            .catch((err) => console.log("failed to get token in cb: " + err));
+              .then((res) => res.json())
+              .then((data) => {
+                setToken(data.access_token);
+              })
+              .catch((err) =>
+                console.log("error getting new token in cb: ", err)
+              );
+          } else {
+            // get token
+            await fetch("/auth/token", {
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                setToken(data.access_token);
+                console.log("player is undefined. get token.");
+              })
+              .catch((err) => console.log("Failed to get token in cb: " + err));
+          }
 
           cb(token);
         },
-        volume: 1,
+        volume: 1, // 1 = full volume
       });
 
-      setPlayer(player);
+      setPlayerObj(player);
+
+      player.on("account_error", ({ message }) => {
+        console.error("Failed to validate Spotify account", message);
+        // navigate to page to get premium for user.
+        <Redirect to="/getpremium" />;
+      });
 
       player.on("authentication_error", ({ message }) => {
         console.error("Failed to authenticate", message);
-        console.log("trying new token");
-        fetch("/auth/new-token")
-          .then((res) => res.json())
-          .then((data) => setToken(data.access_token));
       });
 
       player.on("playback_error", ({ message }) => {
@@ -81,7 +106,7 @@ function WebPlayback(props) {
           return;
         }
 
-        //console.log("state: ", state);
+        //console.log(state.track_window.current_track);
         setTrack(state.track_window.current_track);
         setPaused(state.paused);
         const progressObj = {
@@ -99,11 +124,31 @@ function WebPlayback(props) {
       player.connect();
     };
     //console.log("props.token: ", props.token);
+    return function cleanUp() {
+      setPlayerObj(undefined);
+    };
   }, []);
+
+  useEffect(() => {
+    let id = currentTrack.id;
+
+    fetch(`https://api.spotify.com/v1/tracks/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        data.explicit ? setIsExplicit(true) : setIsExplicit(false);
+      })
+      .catch((err) => console.log(err));
+  }, [currentTrack]);
 
   const nextTrack = () => {
     //console.log(`next track called`);
-    player.nextTrack();
+    playerObj.nextTrack();
   };
 
   if (!is_active) {
@@ -128,15 +173,43 @@ function WebPlayback(props) {
         <div className="player-container">
           <div className="main-wrapper">
             <img
-              src={current_track.album.images[0].url}
+              src={currentTrack.album.images[0].url}
               className="now-playing__cover"
               alt=""
             />
 
             <div className="now-playing__side">
-              <div className="now-playing__name">{current_track.name}</div>
+              <img
+                src={spotifyIcon}
+                alt="Spotify Icon"
+                style={{
+                  height: 25,
+                  padding: 11,
+                  marginLeft: -9,
+                  // spotify requires half of height for padding
+                }}
+              />
+              <div className="now-playing__name">
+                <OpenSpotifyLink uri={currentTrack.uri}>
+                  {currentTrack.name}
+                  {"  "}
+                </OpenSpotifyLink>
+                {isExplicit && (
+                  <img
+                    src={explicitIcon}
+                    alt="Explicit track warning"
+                    style={{
+                      height: 25,
+                      float: "right",
+                      // spotify requires half of height for padding
+                    }}
+                  />
+                )}
+              </div>
               <div className="now-playing__artist">
-                {current_track.artists[0].name}
+                <OpenSpotifyLink uri={currentTrack.artists[0].uri}>
+                  {currentTrack.artists[0].name}
+                </OpenSpotifyLink>
               </div>
               <TrackProgressBar
                 duration={trackProgress.duration}
@@ -148,7 +221,7 @@ function WebPlayback(props) {
                 <button
                   className="btn-spotify"
                   onClick={() => {
-                    player.previousTrack();
+                    playerObj.previousTrack();
                   }}
                 >
                   <i className="fas fa-backward"></i>
@@ -157,7 +230,7 @@ function WebPlayback(props) {
                 <button
                   className="btn-spotify"
                   onClick={() => {
-                    player.togglePlay();
+                    playerObj.togglePlay();
                   }}
                 >
                   {is_paused ? (
@@ -170,7 +243,7 @@ function WebPlayback(props) {
                 <button
                   className="btn-spotify"
                   onClick={() => {
-                    player.nextTrack();
+                    playerObj.nextTrack();
                   }}
                 >
                   <i className="fas fa-forward"></i>
@@ -181,7 +254,7 @@ function WebPlayback(props) {
         </div>
         <ShuffleControls
           nextTrack={nextTrack}
-          currentTrack={current_track}
+          currentTrack={currentTrack}
           isPaused={is_paused}
           token={token}
         />

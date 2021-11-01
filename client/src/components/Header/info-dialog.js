@@ -32,15 +32,23 @@ export const InfoDialog = ({ openInfo, setInfoOpen }) => {
       <DialogContent>
         <ul className="modalList">
           <li>Requires a premium Spotify subscription</li>
-          <li>ShufflePlus requires an open Spotify desktop app.</li>
+          <li>
+            ShufflePlus requires an open Spotify desktop app or 'open.spotify'
+            web player.
+          </li>
           <li>
             Once logged in, select ShufflePlus in your list of devices in the
             desktop spotify app.
           </li>
           <li>
             If you want to play a different playlist/song, you may have to
-            select "This Computer" in spotify devices. Then press play on the
-            playlist you want and select ShufflePlus in spotify device list.
+            select "This Computer/Web Browser" in spotify devices. Then press
+            play on the playlist you want and select ShufflePlus in spotify
+            device list.
+          </li>
+          <li>
+            You cannot seek with the track progress bar in ShufflePlus. Use your
+            Spotify app to seek.
           </li>
         </ul>
         You can contact the developer on{" "}

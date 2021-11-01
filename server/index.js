@@ -34,6 +34,10 @@ var generateRandomString = function (length) {
 
 var app = express();
 
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "*");
+// });
+
 app.get("/auth/login", (req, res) => {
   var scope = "streaming user-read-email user-read-private";
   var state = generateRandomString(16);

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { SaveTrack } from "./saveTrack";
+import Snackbar from "@mui/material/Snackbar";
+import Slide from "@mui/material/Slide";
 import * as storage from "../services/localStorage";
 
 var myStorage;
@@ -49,41 +51,38 @@ var skipCount = 0;
 
 var skipTimeout = null;
 
-const skipTrack = (nextTrack, track) => {
-  var dNow = new Date().getTime();
-
-  const week = 604800000; // a week in milliseconds
-
-  var trackD = new Date(track.datePlayed).getTime();
-
-  var weekAgo = dNow - week;
-
-  // within a week so, skip track
-  if (trackD > weekAgo) {
-    console.log(`skipping > ${track.name}, played less than a week ago!`);
-    skipCount++;
-    skipTimeout = setTimeout(nextTrack, 2000);
-  }
-};
-
-const ShuffleControls = ({
-  nextTrack,
-  currentTrack,
-  isPaused,
-  token: receivedToken,
-}) => {
+const ShuffleControls = ({ nextTrack, currentTrack, isPaused, token }) => {
   const [skip, setSkip] = useState(false);
   const [genres, setGenres] = useState(() => {
     genreOptions.sort();
     return genreOptions.map((subarr) => [...subarr]);
   });
-  const [token, setToken] = useState(receivedToken);
+  //const [token, setToken] = useState(receivedToken);
   const [artistGenres, setArtistGenres] = useState([]);
   const [showReset, setShowReset] = useState(false);
+  const [showToast, setToast] = useState(false);
+  const [toastMsg, setToastMsg] = useState("");
 
   useEffect(() => {
     myStorage = storage.isStorageSupported();
   }, []);
+
+  const handleToastOpen = (msg) => {
+    //handle already open toast
+    if (showToast) {
+      handleToastClose();
+    }
+    setToastMsg(msg);
+    setToast(true);
+  };
+
+  const handleToastClose = (event, reason = "") => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setToast(false);
+  };
 
   const getToken = () => {
     return fetch("/auth/token")
@@ -127,8 +126,8 @@ const ShuffleControls = ({
       };
 
       const startFetchCalls = async () => {
-        let tokenResult = await getToken(); // get latest token
-        setToken(tokenResult.access_token);
+        // let tokenResult = await getToken(); // get latest token
+        // setToken(tokenResult.access_token);
 
         let artistId = await getArtistId();
         let artistGResult = await getArtistGenres(artistId);
@@ -140,12 +139,27 @@ const ShuffleControls = ({
     }
   };
 
-  useEffect(() => {
-    console.log(
-      `artist ${currentTrack.artists[0].name} Genres: `,
-      artistGenres
-    );
+  const skipTrack = (track) => {
+    var dNow = new Date().getTime();
 
+    const week = 604800000; // a week in milliseconds
+
+    var trackD = new Date(track.datePlayed).getTime();
+
+    var weekAgo = dNow - week;
+
+    // within a week so, skip track
+    if (trackD > weekAgo) {
+      console.log(`skipping > ${track.name}, played less than a week ago!`);
+      skipCount++;
+      handleToastOpen(
+        "Track was played less than a week ago. Skipping track..."
+      );
+      skipTimeout = setTimeout(nextTrack, 2000);
+    }
+  };
+
+  useEffect(() => {
     const disabledGenres = genres
       .filter((item) => {
         if (item[1] === false) {
@@ -163,16 +177,14 @@ const ShuffleControls = ({
           if (artistGenres[i].includes(g)) {
             console.log(`Matched Genre ${g}. Skip: ${currentTrack.name}`);
             next = true;
-            return next;
+            return next; // break loop
           }
-        }
-        if (next) {
-          console.error("Next is true. loop did not break!");
         }
       });
 
       if (next) {
         skipCount++;
+        handleToastOpen("Matched Genre. Skipping track...");
         skipTimeout = setTimeout(nextTrack, 2000);
       }
     }
@@ -211,7 +223,7 @@ const ShuffleControls = ({
 
             // check if track was played in last week
             if (skip) {
-              skipTrack(nextTrack, track);
+              skipTrack(track);
             }
             // ### MORE CONTROL FUNCTIONS HERE ###
           }
@@ -266,6 +278,10 @@ const ShuffleControls = ({
     setGenres(genres.map((g, j) => (j !== i ? g : [g[0], !g[1]])));
   };
 
+  const SlideTransition = (props) => {
+    return <Slide {...props} direction="down" />;
+  };
+
   return (
     <div className="controls-container">
       <div className="controls-container-item">
@@ -316,6 +332,22 @@ const ShuffleControls = ({
           </div>
         </div>
       </div>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        autoHideDuration={5000}
+        open={showToast}
+        TransitionComponent={SlideTransition}
+        onClose={handleToastClose}
+        message={toastMsg}
+        key="skip-toast"
+        sx={{
+          color: "white",
+          "& .MuiPaper-root": {
+            backgroundColor: "green",
+            fontWeight: 600,
+          },
+        }}
+      />
     </div>
   );
 };

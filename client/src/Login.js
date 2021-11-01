@@ -14,8 +14,8 @@ const Login = () => (
         <p>
           <span className="subheading">How it works</span>
           <br />
-          When you start playing a track, it's details are saved locally offline
-          to your browser storage on your computer.
+          When you play a track, it's details are saved locally offline to your
+          browser storage on your computer.
           <br />
           The track's details are used in optional functions to skip tracks
           played in the last week, or skip tracks related to genres of your

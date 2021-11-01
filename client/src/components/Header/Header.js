@@ -8,6 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { InfoDialog } from "./info-dialog";
 import { SettingsDialog } from "./settings-dialog";
+import { Link } from "react-router-dom";
 
 const Header = ({ hasToken }) => {
   const [isLoggedIn, setIsloggedIn] = useState(hasToken);
@@ -21,7 +22,9 @@ const Header = ({ hasToken }) => {
   return (
     <header>
       <div className="header-wrapper">
-        <div className="header-title">ShufflePlus</div>
+        <div className="header-title">
+          <Link to="/">ShufflePlus</Link>
+        </div>
         <div className="btns-group">
           {/* {isLoggedIn && (
             <IconButton
