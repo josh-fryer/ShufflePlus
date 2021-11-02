@@ -159,7 +159,7 @@ function WebPlayback(props) {
             <b>
               {" "}
               Transfer your playback to ShufflePlus from the device list in the
-              desktop app.
+              Spotify app.
               <br />
               Press play on a playlist/track before transferring.
             </b>

@@ -8,6 +8,19 @@ var myStorage;
 
 var prevTrackId = "";
 
+// const genreOptions = [
+//   { name: "rock", enabled: true },
+//   { name: "pop", enabled: true },
+//   { name: "punk", enabled: true },
+//   { name: "acoustic", enabled: true },
+//   { name: "alternative", enabled: true },
+//   { name: "ambient", enabled: true },
+//   { name: "blues", enabled: true },
+//   { name: "classical", enabled: true },
+//   { name: "chill", enabled: true },
+//   { name: "comedy", enabled: true },
+// ];
+
 const genreOptions = [
   ["rock", true],
   ["pop", true],

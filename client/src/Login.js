@@ -8,7 +8,9 @@ const Login = () => (
       <div className="login-content">
         <b>ShufflePlus can...</b>
         <ul>
-          <li>Stop recent tracks from being repeated in shuffle playback.</li>
+          <li>
+            Stop recently played tracks from being repeated in shuffle playback.
+          </li>
           <li>Pick genres to exclude from playback.</li>
         </ul>
         <p>
@@ -32,7 +34,10 @@ const Login = () => (
       <a className="btn-login" href="/auth/login">
         Login with Spotify
       </a>
-      <h6>You will be redirected to Spotify.com to authenticate</h6>
+      <h6>
+        You will be directed to Spotify.com to authenticate, then redirected
+        back.
+      </h6>
     </div>
   </div>
 );

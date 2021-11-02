@@ -2,7 +2,6 @@ import React from "react";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 
@@ -32,19 +31,10 @@ export const InfoDialog = ({ openInfo, setInfoOpen }) => {
       <DialogContent>
         <ul className="modalList">
           <li>Requires a premium Spotify subscription</li>
-          <li>
-            ShufflePlus requires an open Spotify desktop app or 'open.spotify'
-            web player.
-          </li>
+          <li>ShufflePlus requires an open Spotify app.</li>
           <li>
             Once logged in, select ShufflePlus in your list of devices in the
-            desktop spotify app.
-          </li>
-          <li>
-            If you want to play a different playlist/song, you may have to
-            select "This Computer/Web Browser" in spotify devices. Then press
-            play on the playlist you want and select ShufflePlus in spotify
-            device list.
+            Spotify app.
           </li>
           <li>
             You cannot seek with the track progress bar in ShufflePlus. Use your
