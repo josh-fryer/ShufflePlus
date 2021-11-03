@@ -23,14 +23,15 @@ export const LogoutDialog = ({ open, setOpen, logout }) => {
       <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          In order to logout of ShufflePlus, you need to logout of Spotify
-          web-player. Select yes to logout. You will be redirected to Spotify to
-          confirm.
+          In order to logout of ShufflePlus, you need to be logged out of
+          Spotify web-player. Select yes to logout. You will be redirected to
+          Spotify to confirm.
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button
           variant="outlined"
+          color="success"
           onClick={async () => {
             await logout();
             window.location = "https://www.spotify.com/logout/";
@@ -39,7 +40,7 @@ export const LogoutDialog = ({ open, setOpen, logout }) => {
         >
           YES
         </Button>
-        <Button variant="outlined" onClick={() => setOpen(false)}>
+        <Button color="error" variant="outlined" onClick={() => setOpen(false)}>
           NO
         </Button>
       </DialogActions>
