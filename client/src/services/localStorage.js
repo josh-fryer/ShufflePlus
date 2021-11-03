@@ -20,7 +20,7 @@ export const isStorageSupported = () => {
 export const getStorageSize = () => {
   const trackHistory = myStorage.getItem("ShufflePlusTrackHistory");
   const size = new TextEncoder().encode(trackHistory).length;
-  console.log("size = " + size);
+  //console.log("size = " + size);
   //const kiloBytes = size / 1024;
   //const megaBytes = kiloBytes / 1024;
   const megaBytes = size / (1024 * 1024);

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { SaveTrack } from "./saveTrack";
 import Snackbar from "@mui/material/Snackbar";
 import Slide from "@mui/material/Slide";
 import * as storage from "../services/localStorage";
+import { UserContext } from "../services/UserContext";
 
 var myStorage;
 
@@ -64,7 +65,8 @@ var skipCount = 0;
 
 var skipTimeout = null;
 
-const ShuffleControls = ({ nextTrack, currentTrack, isPaused, token }) => {
+const ShuffleControls = ({ nextTrack, currentTrack, isPaused }) => {
+  const context = useContext(UserContext);
   const [skip, setSkip] = useState(false);
   const [genres, setGenres] = useState(() => {
     genreOptions.sort();
@@ -97,12 +99,6 @@ const ShuffleControls = ({ nextTrack, currentTrack, isPaused, token }) => {
     setToast(false);
   };
 
-  const getToken = () => {
-    return fetch("/auth/token")
-      .then((res) => res.json())
-      .catch((err) => console.log(err));
-  };
-
   const resetGenres = () => {
     genreOptions.sort();
     setGenres(genreOptions.map((subarr) => [...subarr]));
@@ -130,7 +126,7 @@ const ShuffleControls = ({ nextTrack, currentTrack, isPaused, token }) => {
         // get artist with id to get artist's genres[]
         return fetch(`https://api.spotify.com/v1/artists/${artistId}`, {
           headers: {
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer " + context.token,
             "Content-Type": "application/json",
           },
         })
@@ -287,7 +283,7 @@ const ShuffleControls = ({ nextTrack, currentTrack, isPaused, token }) => {
       return;
     }
     // map to new array to avoid mutation.
-    // if genre equal to index of clicked return it with bool toggled. else => genre
+    // if genre equal to index of clicked return it with bool toggled. else return genre
     setGenres(genres.map((g, j) => (j !== i ? g : [g[0], !g[1]])));
   };
 

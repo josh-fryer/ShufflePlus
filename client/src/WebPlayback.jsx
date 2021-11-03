@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ShuffleControls from "./features/ShuffleControls";
 import TrackProgressBar from "./features/TrackProgressBar";
 import OpenSpotifyLink from "./components/track_link";
 import "./style/WebPlayback.css";
 import spotifyIcon from "./assets/Spotify_Icon_White.png";
 import explicitIcon from "./assets/19badge-dark.png";
+import { UserContext } from "./services/UserContext";
 
 const track = {
   name: "",
@@ -14,12 +15,12 @@ const track = {
   artists: [{ name: "" }],
 };
 
-function WebPlayback(props) {
+function WebPlayback() {
+  const context = useContext(UserContext);
   const [is_paused, setPaused] = useState(false);
   const [is_active, setActive] = useState(false);
   const [playerObj, setPlayerObj] = useState(undefined);
   const [currentTrack, setTrack] = useState(track);
-  const [token, setToken] = useState(props.token);
   const [isExplicit, setIsExplicit] = useState(false);
   const [trackProgress, setTrackProgress] = useState({
     duration: 0,
@@ -43,36 +44,13 @@ function WebPlayback(props) {
           if (playerObj !== undefined) {
             // player is already initaialised so token has expired. get new token:
             console.log("get new token. player is defined.");
-            await fetch("/auth/new-token", {
-              headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-              },
-            })
-              .then((res) => res.json())
-              .then((data) => {
-                setToken(data.access_token);
-              })
-              .catch((err) =>
-                console.log("error getting new token in cb: ", err)
-              );
+            await context.refreshToken();
           } else {
             // get token
-            await fetch("/auth/token", {
-              headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-              },
-            })
-              .then((res) => res.json())
-              .then((data) => {
-                setToken(data.access_token);
-                console.log("player is undefined. get token.");
-              })
-              .catch((err) => console.log("Failed to get token in cb: " + err));
+            await context.getToken();
           }
 
-          cb(token);
+          cb(context.token);
         },
         volume: 1, // 1 = full volume
       });
@@ -130,11 +108,14 @@ function WebPlayback(props) {
   }, []);
 
   useEffect(() => {
+    if (currentTrack.id === undefined) {
+      return;
+    }
     let id = currentTrack.id;
 
     fetch(`https://api.spotify.com/v1/tracks/${id}`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${context.token}`,
         "Content-Type": "application/json",
         Accept: "application/json",
       },
@@ -160,8 +141,6 @@ function WebPlayback(props) {
               {" "}
               Transfer your playback to ShufflePlus from the device list in the
               Spotify app.
-              <br />
-              Press play on a playlist/track before transferring.
             </b>
           </div>
         </div>
@@ -256,7 +235,6 @@ function WebPlayback(props) {
           nextTrack={nextTrack}
           currentTrack={currentTrack}
           isPaused={is_paused}
-          token={token}
         />
       </>
     );

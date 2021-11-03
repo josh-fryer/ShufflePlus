@@ -1,23 +1,18 @@
-import React, { useState, useEffect } from "react";
-import DialogTitle from "@mui/material/DialogTitle";
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import CloseIcon from "@mui/icons-material/Close";
+import React, { useState, useEffect, useContext } from "react";
 import IconButton from "@mui/material/IconButton";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { InfoDialog } from "./info-dialog";
 import { SettingsDialog } from "./settings-dialog";
+import { LogoutDialog } from "./logout-dialog";
 import { Link } from "react-router-dom";
+import { Button } from "@mui/material";
+import { UserContext } from "../../services/UserContext";
 
-const Header = ({ hasToken }) => {
-  const [isLoggedIn, setIsloggedIn] = useState(hasToken);
+const Header = () => {
+  const context = useContext(UserContext);
   const [openInfo, setInfoOpen] = useState(false);
+  const [openLogout, setLogoutOpen] = useState(false);
   const [openSettings, setSettingsOpen] = useState(false);
-
-  useEffect(() => {
-    setIsloggedIn(hasToken);
-  }, [hasToken]);
 
   return (
     <header>
@@ -52,10 +47,33 @@ const Header = ({ hasToken }) => {
           >
             <i className="far fa-question-circle"></i>
           </IconButton>
+          {context.token !== "" && (
+            <Button
+              variant="outlined"
+              sx={{
+                color: "white",
+                borderColor: "#626262",
+                fontSize: 14,
+                "&:hover": {
+                  borderColor: "white",
+                },
+              }}
+              onClick={() => {
+                setLogoutOpen(true);
+              }}
+            >
+              Logout
+            </Button>
+          )}
         </div>
       </div>
       <SettingsDialog open={openSettings} setOpen={setSettingsOpen} />
       <InfoDialog openInfo={openInfo} setInfoOpen={setInfoOpen} />
+      <LogoutDialog
+        open={openLogout}
+        setOpen={setLogoutOpen}
+        logout={context.logout}
+      />
     </header>
   );
 };

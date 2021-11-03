@@ -48,6 +48,7 @@ app.get("/auth/login", (req, res) => {
     scope: scope,
     redirect_uri: spotify_redirect_uri,
     state: state,
+    show_dialog: true,
   });
 
   res.redirect(
@@ -120,9 +121,10 @@ app.get("/auth/new-token", (req, res) => {
   });
 });
 
-// app.listen(process.env.PORT || port, () => {
-//   console.log(`Listening at port`);
-// });
+app.get("/auth/logout", (req, res) => {
+  access_token = "";
+  refresh_token = "";
+});
 
 // serve static assets if in production
 if (process.env.NODE_ENV === "production") {
