@@ -40,6 +40,12 @@ export const InfoDialog = ({ openInfo, setInfoOpen }) => {
             You cannot seek with the track progress bar in ShufflePlus. Use your
             Spotify app to seek.
           </li>
+          <li>
+            To see results of the auto skipping of recently played songs, you
+            will need to play music through ShufflePlus so it can build a
+            history of played songs to work with. This can take a few days to a
+            week to see ShufflePlus begin skipping repeated songs.
+          </li>
         </ul>
         You can contact the developer on{" "}
         <a
