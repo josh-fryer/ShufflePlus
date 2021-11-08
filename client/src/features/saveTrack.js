@@ -59,7 +59,7 @@ export const SaveTrack = (track, trackIndex) => {
       trackObj.datePlayed = dateToday;
 
       saveTrackHistory(trackHistoryParse);
-      console.log("trackHistoryParse after update: ", trackHistoryParse);
+      console.log("Updated track history: ", trackHistoryParse);
     } else {
       // add new track to track history
       trackHistoryParse.songs.push(prepTrack);

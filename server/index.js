@@ -112,7 +112,7 @@ app.get("/auth/new-token", (req, res) => {
 
   request.post(authOptions, function (error, response, body) {
     if (!error && response.statusCode === 200) {
-      console.log("Successfully refreshed token!");
+      console.log("Successfully refreshed token");
       access_token = body.access_token;
       res.json({ access_token: access_token });
     } else {

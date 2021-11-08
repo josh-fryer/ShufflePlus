@@ -43,7 +43,7 @@ function WebPlayback() {
 
           if (playerObj !== undefined) {
             // player is already initaialised so token has expired. get new token:
-            console.log("get new token. player is defined.");
+            //console.log("get new token. player is defined.");
             await context.refreshToken();
           } else {
             // get token
