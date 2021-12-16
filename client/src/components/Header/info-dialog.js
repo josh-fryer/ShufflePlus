@@ -14,7 +14,7 @@ export const InfoDialog = ({ openInfo, setInfoOpen }) => {
       fullWidth={true}
     >
       <DialogTitle>
-        Info{" "}
+        Help{" "}
         <IconButton
           aria-label="close"
           onClick={() => setInfoOpen(!openInfo)}

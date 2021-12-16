@@ -40,7 +40,7 @@ export const UserContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    // get token
+    // get token at start
     getToken();
   }, []);
 

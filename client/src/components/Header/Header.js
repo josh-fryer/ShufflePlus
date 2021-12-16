@@ -53,7 +53,7 @@ const Header = () => {
               sx={{
                 color: "white",
                 borderColor: "#626262",
-                fontSize: 14,
+                fontSize: 12,
                 "&:hover": {
                   borderColor: "white",
                 },

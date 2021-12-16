@@ -39,8 +39,8 @@ const Footer = () => {
           src={logo}
           alt="Spotify Logo"
           style={{
-            height: 50,
-            padding: 25,
+            height: 42,
+            padding: 21,
             // spotify requires half of height for padding
           }}
         />

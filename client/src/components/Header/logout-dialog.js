@@ -23,9 +23,8 @@ export const LogoutDialog = ({ open, setOpen, logout }) => {
       <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          In order to logout of ShufflePlus, you need to be logged out of
-          Spotify web-player. Select yes to logout. You will be redirected to
-          Spotify to confirm.
+          In order to logout of ShufflePlus, you need to log out of Spotify
+          Web-Player. You will be redirected to Spotify to confirm.
         </DialogContentText>
       </DialogContent>
       <DialogActions>

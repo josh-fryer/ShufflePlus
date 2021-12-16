@@ -39,8 +39,7 @@ function WebPlayback() {
       const player = new window.Spotify.Player({
         name: "ShufflePlus Player",
         getOAuthToken: async (cb) => {
-          //console.log("GET TOKEN cb");
-
+          console.log("GET TOKEN cb");
           if (playerObj !== undefined) {
             // player is already initaialised so token has expired. get new token:
             //console.log("get new token. player is defined.");
@@ -65,6 +64,7 @@ function WebPlayback() {
 
       player.on("authentication_error", ({ message }) => {
         console.error("Failed to authenticate", message);
+        console.log("playerObj = ", playerObj);
       });
 
       player.on("playback_error", ({ message }) => {
@@ -178,6 +178,7 @@ function WebPlayback() {
                     src={explicitIcon}
                     alt="Explicit track warning"
                     style={{
+                      marginLeft: 5,
                       height: 25,
                       float: "right",
                       // spotify requires half of height for padding
