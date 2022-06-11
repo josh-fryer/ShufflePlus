@@ -84,6 +84,7 @@ button {
 
 .now-playing__side {
   margin-left: 2%;
+  width: 416px;
 }
 
 .now-playing__side .btn-spotify:nth-of-type(2n) {

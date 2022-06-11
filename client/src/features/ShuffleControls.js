@@ -9,6 +9,7 @@ var myStorage;
 
 var prevTrackId = "";
 
+// better implementation but would need to convert previosly saved array:
 // const genreOptions = [
 //   { name: "rock", enabled: true },
 //   { name: "pop", enabled: true },
@@ -283,7 +284,7 @@ const ShuffleControls = ({ nextTrack, currentTrack, isPaused }) => {
       return;
     }
     // map to new array to avoid mutation.
-    // if genre equal to index of clicked return it with bool toggled. else return genre
+    // if genre equal to index of clicked, return it with bool toggled. else return genre
     setGenres(genres.map((g, j) => (j !== i ? g : [g[0], !g[1]])));
   };
 
@@ -313,7 +314,7 @@ const ShuffleControls = ({ nextTrack, currentTrack, isPaused }) => {
       </div>
       <div className="controls-container-item">
         <div className="controls-content">
-          <h3>Include or exclude artists with these genres:</h3>
+          <h3>Include or exclude artists by genre:</h3>
           {showReset && (
             <div className="genres-btn-bar">
               <button

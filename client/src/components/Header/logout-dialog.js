@@ -23,8 +23,7 @@ export const LogoutDialog = ({ open, setOpen, logout }) => {
       <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          In order to logout of ShufflePlus, you need to log out of Spotify
-          Web-Player. You will be redirected to Spotify to confirm.
+          Logout of ShufflePlus, also logs you out of Spotify Web-Player.
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -33,7 +32,7 @@ export const LogoutDialog = ({ open, setOpen, logout }) => {
           color="success"
           onClick={async () => {
             await logout();
-            window.location = "https://www.spotify.com/logout/";
+            window.location = "/";
           }}
           autoFocus
         >

@@ -17,6 +17,7 @@ const track = {
 
 function WebPlayback() {
   const context = useContext(UserContext);
+  const [intialTimeStart, setIntialTimeStart] = useState(0);
   const [is_paused, setPaused] = useState(false);
   const [is_active, setActive] = useState(false);
   const [playerObj, setPlayerObj] = useState(undefined);
@@ -40,13 +41,20 @@ function WebPlayback() {
         name: "ShufflePlus Player",
         getOAuthToken: async (cb) => {
           console.log("GET TOKEN cb");
-          if (playerObj !== undefined) {
-            // player is already initaialised so token has expired. get new token:
-            //console.log("get new token. player is defined.");
-            await context.refreshToken();
-          } else {
-            // get token
+          //console.log("Token: ", context.token);
+
+          if (context.token === "") {
+            console.log();
             await context.getToken();
+          } else {
+            let d = new Date().getTime();
+            // compare time. if over 30 mins, refresh token
+            if (d > intialTimeStart + 30 * 60000) {
+              setIntialTimeStart(d);
+              // token has expired. get new token:
+              console.log("get new token.");
+              await context.refreshToken();
+            }
           }
 
           cb(context.token);
@@ -60,6 +68,10 @@ function WebPlayback() {
         console.error("Failed to validate Spotify account", message);
         // navigate to page to get premium for user.
         <Redirect to="/getpremium" />;
+      });
+
+      player.on("initialization_error", ({ message }) => {
+        console.error("Failed to initialize", message);
       });
 
       player.on("authentication_error", ({ message }) => {
@@ -84,7 +96,7 @@ function WebPlayback() {
           return;
         }
 
-        //console.log(state.track_window.current_track);
+        //console.log(state);
         setTrack(state.track_window.current_track);
         setPaused(state.paused);
         const progressObj = {
