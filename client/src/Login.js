@@ -3,7 +3,7 @@ import React from "react";
 const Login = () => (
   <div className="App">
     <div className="login-container">
-      <div className="login-header">Enhance Spotify's shuffle</div>
+      <div className="login-header">Enhance Spotify's Shuffle</div>
 
       <div className="login-content">
         <b>ShufflePlus can...</b>
@@ -17,7 +17,7 @@ const Login = () => (
           <span className="subheading">How it works</span>
           <br />
           When you play a track, it's details are saved locally offline to your
-          browser storage on your computer.
+          browser storage on your PC.
           <br />
           The track's details are used in optional functions to skip tracks
           played in the last week, or skip tracks related to genres of your
