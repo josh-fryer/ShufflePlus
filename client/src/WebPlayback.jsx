@@ -44,7 +44,7 @@ function WebPlayback() {
           //console.log("Token: ", context.token);
 
           if (context.token === "") {
-            console.log();
+            //console.log("get initial token");
             await context.getToken();
           } else {
             let d = new Date().getTime();
@@ -81,6 +81,7 @@ function WebPlayback() {
 
       player.on("playback_error", ({ message }) => {
         console.error("Failed to perform playback", message);
+        //console.log("playerObj = ", playerObj);
       });
 
       player.addListener("ready", ({ device_id }) => {
