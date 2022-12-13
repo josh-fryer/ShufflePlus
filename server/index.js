@@ -3,7 +3,7 @@ const request = require("request");
 const dotenv = require("dotenv");
 const path = require("path");
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8080;
 
 global.access_token = "";
 global.refresh_token = "";
@@ -33,10 +33,6 @@ var generateRandomString = function (length) {
 };
 
 var app = express();
-
-// app.use((req, res, next) => {
-//   res.header("Access-Control-Allow-Origin", "*");
-// });
 
 app.get("/auth/login", (req, res) => {
   var scope = "streaming user-read-email user-read-private";

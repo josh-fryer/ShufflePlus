@@ -4,16 +4,7 @@ module.exports = function (app) {
   app.use(
     "/auth/**",
     createProxyMiddleware({
-      target: "http://localhost:5000",
+      target: "http://localhost:8080",
     })
   );
 };
-
-// module.exports = function (app) {
-//   app.use(
-//     "/auth/**",
-//     createProxyMiddleware({
-//       target: "https://shuffleplus-c524f1.netlify.app",
-//     })
-//   );
-// };

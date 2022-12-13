@@ -14,8 +14,6 @@ const trackHistoryRef = {
   ],
 };
 
-const updateTrack = () => {};
-
 export const SaveTrack = (track, trackIndex) => {
   //myStorage.removeItem("ShufflePlusTrackHistory");
   var trackHistory = myStorage.getItem("ShufflePlusTrackHistory");
@@ -64,7 +62,7 @@ export const SaveTrack = (track, trackIndex) => {
       // add new track to track history
       trackHistoryParse.songs.push(prepTrack);
       saveTrackHistory(trackHistoryParse);
-      console.log("added song to track history: ", trackHistoryParse);
+      console.log("added new song to track history: ", trackHistoryParse);
     }
   }
 };
