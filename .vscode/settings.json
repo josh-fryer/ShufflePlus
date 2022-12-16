@@ -1,0 +1,6 @@
+{
+    "eslint.codeActionsOnSave.rules": [
+        "*"
+    ],
+    "editor.formatOnSave": true
+}
