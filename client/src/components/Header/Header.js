@@ -67,6 +67,7 @@ const Header = () => {
           )}
         </div>
       </div>
+      {/* TO DO: Settings. (probably not needed anymore)*/}
       <SettingsDialog open={openSettings} setOpen={setSettingsOpen} />
       <InfoDialog openInfo={openInfo} setInfoOpen={setInfoOpen} />
       <LogoutDialog
