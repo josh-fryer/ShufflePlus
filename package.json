@@ -23,6 +23,7 @@
     "express": "^4.16.3",
     "jsonwebtoken": "^8.5.0",
     "mongoose": "^5.13.12",
+    "prop-types": "^15.8.1",
     "request": "^2.88.2"
   },
   "devDependencies": {

@@ -18,7 +18,7 @@ const Login = () => (
 					<br />
           When you play a track, it's details are saved locally offline to your
           browser storage on your device.
-          <br />
+					<br />
           The track's details are used in optional functions to skip tracks
           played in the last week, or skip tracks related to genres of your
           choosing.
@@ -26,7 +26,7 @@ const Login = () => (
 			</div>
 			<div className="warning">
         Requires Spotify premium.
-      </div>
+			</div>
 
 			<h4>Login to get started.</h4>
 			<a className="btn-login" href="/auth/login">

@@ -12,10 +12,11 @@
   },
   "plugins": ["react"],
   "rules": {
-    "indent": ["error", "tab"],
+    "indent": ["warn", "tab"],
     "linebreak-style": ["error", "windows"],
     "quotes": ["error", "double"],
     "semi": ["error", "always"],
-    "react/no-unescaped-entities": ["error", { "forbid": [">", "}"] }]
+    "react/no-unescaped-entities": ["error", { "forbid": [">", "}"] }],
+    "react/prop-types": [0]
   }
 }
