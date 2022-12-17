@@ -1,16 +1,8 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 import Slider from "@mui/material/Slider";
 
 var addSecond = null; // store interval
 var newPosition = 0;
-
-TrackProgressBar.propTypes = {
-	duration: PropTypes.number,
-	position: PropTypes.number,
-	isPaused: PropTypes.bool.isRequired, 
-	isActive: PropTypes.bool.isRequired
-};
 
 const TrackProgressBar = ({ duration, position, isPaused, isActive }) => {
 	const [displayPosition, setDisplayPosition] = useState("00:00");

@@ -1,4 +1,3 @@
-import React from "react";
 import KoFi from "./KoFi";
 import logo from "../assets/Spotify_Logo_RGB_Green.png";
 

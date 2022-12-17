@@ -1,5 +1,3 @@
-import React from "react";
-
 const OpenSpotifyLink = ({ uri = "", children }) => {
 	var splitUri = uri.split(":");
 

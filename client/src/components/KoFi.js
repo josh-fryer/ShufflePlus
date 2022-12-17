@@ -1,4 +1,3 @@
-import React from "react";
 import "../style/KoFi.css";
 
 export default function KoFi(props) {

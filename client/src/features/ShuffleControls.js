@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { SaveTrack } from "./saveTrack";
 import Snackbar from "@mui/material/Snackbar";
 import Slide from "@mui/material/Slide";
@@ -188,7 +188,7 @@ const ShuffleControls = ({ nextTrack, currentTrack, isPaused }) => {
 					if (artistGenres[i].includes(g)) {
 						console.log(`Matched Genre ${g}. Skip: ${currentTrack.name}`);
 						next = true;
-						return next; // break loop
+						 return next; // break loop
 					}
 				}
 			});

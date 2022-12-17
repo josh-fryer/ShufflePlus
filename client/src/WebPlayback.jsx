@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import ShuffleControls from "./features/ShuffleControls";
 import TrackProgressBar from "./features/TrackProgressBar";
 import OpenSpotifyLink from "./components/track_link";
@@ -6,7 +6,7 @@ import "./style/WebPlayback.css";
 import spotifyIcon from "./assets/Spotify_Icon_White.png";
 import explicitIcon from "./assets/19badge-dark.png";
 import { UserContext } from "./services/UserContext";
-import Redirect from "react-router-dom";
+import {Redirect} from "react-router-dom";
 
 const track = {
 	name: "",
