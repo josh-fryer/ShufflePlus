@@ -171,7 +171,31 @@ function WebPlayback() {
 							alt=""
 						/>
 
-						<div className="now-playing__side">
+						<div className="now-playing__sidePanel">
+							<div className="left_col">
+
+								<div className="now-playing__name">
+									<OpenSpotifyLink uri={currentTrack.uri}>
+										{currentTrack.name}
+										{"  "}
+									</OpenSpotifyLink>
+									{isExplicit && (
+										<img
+											src={explicitIcon}
+											alt="Explicit track warning"
+											style={{
+												marginLeft: 5,
+												height: 25,
+												float: "right",
+											// spotify requires half of height for padding
+											}}
+										/>
+									)}
+								</div>
+							</div>
+							<div className="right_col">
+
+							</div>
 							<img
 								src={spotifyIcon}
 								alt="Spotify Icon"
@@ -182,24 +206,7 @@ function WebPlayback() {
 									// spotify requires half of height for padding
 								}}
 							/>
-							<div className="now-playing__name">
-								<OpenSpotifyLink uri={currentTrack.uri}>
-									{currentTrack.name}
-									{"  "}
-								</OpenSpotifyLink>
-								{isExplicit && (
-									<img
-										src={explicitIcon}
-										alt="Explicit track warning"
-										style={{
-											marginLeft: 5,
-											height: 25,
-											float: "right",
-											// spotify requires half of height for padding
-										}}
-									/>
-								)}
-							</div>
+							
 							<div className="now-playing__artist">
 								<OpenSpotifyLink uri={currentTrack.artists[0].uri}>
 									{currentTrack.artists[0].name}

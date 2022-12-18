@@ -3,6 +3,25 @@
   --spotify-primary: #1db954;
 }
 
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .main-wrapper {
+    flex-wrap: wrap;
+    text-align: center;
+    margin: 0px;
+    padding-top: 37.5px;
+    padding-bottom: 37.5px;
+  }
+
+  .now-playing__cover {
+    margin: 0px;
+  }
+
+  .now-playing__sidePanel {
+    margin: 10px 0px 0px 0px;
+  }
+}
+
 button {
   font-family: inherit;
 }
@@ -82,12 +101,12 @@ button {
   height: 300px;
 }
 
-.now-playing__side {
+.now-playing__sidePanel {
   margin-left: 2%;
   width: 416px;
 }
 
-.now-playing__side .btn-spotify:nth-of-type(2n) {
+.now-playing__sidePanel .btn-spotify:nth-of-type(2n) {
   margin-right: 9px;
   margin-left: 9px;
 }
@@ -285,23 +304,4 @@ img {
 
 .OpenSpotifyLink:hover {
   color: var(--spotify-primary);
-}
-
-@media only screen and (max-width: 768px) {
-  /* For mobile phones: */
-  .main-wrapper {
-    flex-wrap: wrap;
-    text-align: center;
-    margin: 0px;
-    padding-top: 37.5px;
-    padding-bottom: 37.5px;
-  }
-
-  .now-playing__cover {
-    margin: 0px;
-  }
-
-  .now-playing__side {
-    margin: 10px 0px 0px 0px;
-  }
 }
