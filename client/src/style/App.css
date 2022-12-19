@@ -8,13 +8,6 @@
   min-height: 100vh;
 }
 
-@media only screen and (max-width: 768px) {
-  .title {
-    padding: 6px;
-    font-size: 25px;
-  }
-}
-
 .twitter-bird {
   color: var(--header-bg);
 }
@@ -75,9 +68,9 @@ header {
 }
 
 .header-title {
-  font-size: 28px;
+  font-size: 20px;
   font-weight: bold;
-  padding: 15px;
+  padding: 13px;
 }
 
 .header-title a {
@@ -167,4 +160,11 @@ header {
 .spotifyLink:hover {
   background-color: #4b4b4b93;
   border-radius: 8px;
+}
+
+@media only screen and (max-width: 768px) {
+  .title {
+    padding: 6px;
+    font-size: 25px;
+  }
 }

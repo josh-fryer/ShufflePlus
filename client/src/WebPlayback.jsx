@@ -170,47 +170,45 @@ function WebPlayback() {
 							className="now-playing__cover"
 							alt=""
 						/>
-
 						<div className="now-playing__sidePanel">
-							<div className="left_col">
-
-								<div className="now-playing__name">
-									<OpenSpotifyLink uri={currentTrack.uri}>
-										{currentTrack.name}
-										{"  "}
-									</OpenSpotifyLink>
+							<div className="now-playing__sidePanel_Details">
+								<div className="left_col">
+									<div className="now-playing__name">
+										<OpenSpotifyLink uri={currentTrack.uri}>
+											{currentTrack.name}
+											{"  "}
+										</OpenSpotifyLink>
+									</div>
+									<div className="now-playing__artist">
+										<OpenSpotifyLink uri={currentTrack.artists[0].uri}>
+											{currentTrack.artists[0].name}
+										</OpenSpotifyLink>
+									</div>
+								
+								</div>
+								<div className="right_col">
+									<img
+										src={spotifyIcon}
+										alt="Spotify Icon"
+										style={{
+											width: 25,
+											padding: 12.5
+											// spotify requires half of height for padding
+										}}
+									/>
 									{isExplicit && (
 										<img
 											src={explicitIcon}
 											alt="Explicit track warning"
 											style={{
-												marginLeft: 5,
-												height: 25,
-												float: "right",
+												width: 25,
+												padding: 12.5
 											// spotify requires half of height for padding
 											}}
 										/>
 									)}
-								</div>
-							</div>
-							<div className="right_col">
-
-							</div>
-							<img
-								src={spotifyIcon}
-								alt="Spotify Icon"
-								style={{
-									height: 25,
-									padding: 11,
-									marginLeft: -9,
-									// spotify requires half of height for padding
-								}}
-							/>
+								</div>				
 							
-							<div className="now-playing__artist">
-								<OpenSpotifyLink uri={currentTrack.artists[0].uri}>
-									{currentTrack.artists[0].name}
-								</OpenSpotifyLink>
 							</div>
 							<TrackProgressBar
 								duration={trackProgress.duration}
@@ -249,8 +247,10 @@ function WebPlayback() {
 								>
 									<i className="fas fa-forward"></i>
 								</button>
+
 							</div>
-						</div>
+							
+						</div>			
 					</div>
 				</div>
 				<ShuffleControls
