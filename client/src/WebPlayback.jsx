@@ -8,7 +8,7 @@ import explicitIcon from "./assets/19badge-dark.png";
 import { UserContext } from "./services/UserContext";
 import {Redirect} from "react-router-dom";
 
-const track = {
+var track = {
 	name: "",
 	album: {
 		images: [{ url: "" }],
@@ -29,6 +29,8 @@ function WebPlayback() {
 		position: 0,
 		timestamp: 0,
 	});
+	// eslint-disable-next-line no-unused-vars
+	const [avgBgColour, setAvgBgColour] = useState({r:46,g:46,b:46});
 
 	useEffect(() => {
 		const script = document.createElement("script");
@@ -98,8 +100,12 @@ function WebPlayback() {
 					return;
 				}
 
-				//console.log(state);
-				setTrack(state.track_window.current_track);
+				var newTrack = state.track_window.current_track;
+				if (newTrack.name != currentTrack.name && newTrack.name != "")
+				{
+					console.log("state change", newTrack);
+					setTrack(newTrack);
+				}
 				setPaused(state.paused);
 				const progressObj = {
 					duration: state.duration,
@@ -115,9 +121,9 @@ function WebPlayback() {
 
 			player.connect();
 		};
-		//console.log("props.token: ", props.token);
+
 		return function cleanUp() {
-			setPlayerObj(undefined);
+			setPlayerObj(undefined);			
 		};
 	}, []);
 
@@ -125,6 +131,9 @@ function WebPlayback() {
 		if (currentTrack.id === undefined) {
 			return;
 		}
+		console.log("curr track", currentTrack);
+		getAvgColourToBackground(currentTrack.album.images[0].url); 
+
 		let id = currentTrack.id;
 
 		fetch(`https://api.spotify.com/v1/tracks/${id}`, {
@@ -139,11 +148,115 @@ function WebPlayback() {
 				data.explicit ? setIsExplicit(true) : setIsExplicit(false);
 			})
 			.catch((err) => console.log(err));
+
 	}, [currentTrack]);
 
 	const nextTrack = () => {
 		//console.log(`next track called`);
 		playerObj.nextTrack();
+	};
+
+	// eslint-disable-next-line no-unused-vars
+	const getAvgColourToBackground = (imageURL) => {
+		var imgEl = new Image(300,300); 
+		imgEl.src = imageURL;
+		imgEl.crossOrigin = "Anonymous";
+
+		var blockSize = 5, // only visit every 5 pixels
+			defaultRGB = {r:46,g:46,b:46}, // for non-supporting envs
+			canvas = document.createElement("canvas"),
+			imgContext = canvas.getContext && canvas.getContext("2d"),
+			data, width, height,
+			i = -4,
+			length,
+			rgb = {r:0,g:0,b:0},
+			count = 0;
+
+		height = canvas.height = imgEl.height;
+		width = canvas.width = imgEl.width;
+
+		// onLoad is an async function that must await or call func from 
+		imgEl.onload = function()
+		{
+			imgContext.drawImage(imgEl, 0, 0);
+			try {
+				data = imgContext.getImageData(0, 0, width, height);
+			} catch(e) {
+			/* security error, img on diff domain */
+				console.log(e);
+				setAvgBgColour(defaultRGB);
+				return;
+			}
+			setAvgColourToBg();
+		};
+
+		function setAvgColourToBg() {
+			length = data.data.length;
+			//console.log("img data: ", data);
+			while ((i += blockSize * 4) < length) {
+				++count;
+				rgb.r += data.data[i];
+				rgb.g += data.data[i + 1];
+				rgb.b += data.data[i + 2];
+			}
+			//console.log("rgb after while loop: ", rgb);
+			// ~~ is short for Math.floor of values
+			rgb.r = ~~(rgb.r / count);
+			rgb.g = ~~(rgb.g / count);
+			rgb.b = ~~(rgb.b / count);
+			//console.log("rgb after floor: ", rgb);
+
+			if (rgb.r == 0 && rgb.g == 0 && rgb.b == 0) {
+				console.log("setting rgb to DEFAULT. rgb input was: ", rgb);
+				setAvgBgColour(defaultRGB);
+			}
+			else {
+				console.log("original rgb",rgb);
+				rgb = isItTooDark(rgb);
+				setAvgBgColour(rgb);
+			}
+		}
+	};
+
+	const isItTooDark = (rgb) =>
+	{
+		var percent = 0.20;
+		    // HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
+		var hsp = Math.sqrt(
+			0.299 * (rgb.r * rgb.r) +
+				0.587 * (rgb.g * rgb.g) +
+				0.114 * (rgb.b * rgb.b)
+		);
+			
+		// Using the HSP value, determine whether the color is light or dark
+		if (hsp>127.5) {
+			// is light. make it darker
+			rgb.r = ~~(rgb.r - (rgb.r * percent));
+			rgb.g = ~~(rgb.g - (rgb.g * percent));
+			rgb.b = ~~(rgb.b - (rgb.b * percent));
+			console.log("rgb is made darker shade", rgb);
+			return rgb;
+		} 
+		else {
+			// is dark. make it lighter
+			percent = 0.8;
+			rgb.r = ~~(rgb.r + (rgb.r * percent));
+			rgb.g = ~~(rgb.g + (rgb.g * percent));
+			rgb.b = ~~(rgb.b + (rgb.b * percent));
+			console.log("rgb is made lighter shade", rgb);
+			return rgb;
+		}
+	};
+
+	const playerContainerStyle = {
+		backgroundColor: `rgb(${avgBgColour.r}, ${avgBgColour.g}, ${avgBgColour.b})`,
+		alignItems: "flex-start",
+		display: "flex",
+		justifyContent: "center",
+		height: "100%",
+		width: "100%",
+		margin: 0,
+		padding: 0
 	};
 
 	if (!is_active) {
@@ -163,7 +276,9 @@ function WebPlayback() {
 	} else {
 		return (
 			<>
-				<div className="player-container">
+				<div
+					style={ playerContainerStyle }
+				>
 					<div className="main-wrapper">
 						<img
 							src={currentTrack.album.images[0].url}

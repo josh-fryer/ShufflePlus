@@ -1,6 +1,5 @@
 {
-    "eslint.codeActionsOnSave.rules": [
-        "*"
-    ],
-    "editor.formatOnSave": true
+  "eslint.codeActionsOnSave.rules": ["*"],
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint"
 }

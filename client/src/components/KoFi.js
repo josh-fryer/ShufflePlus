@@ -8,7 +8,7 @@ export default function KoFi(props) {
 				title={label}
 				className="kofi-button"
 				style={{ backgroundColor: color }}
-				href={"https://ko-fi.com/joshfryer"}
+				href={"https://ko-fi.com/devjosh"}
 				target="_blank"
 				rel="noopener noreferrer"
 			>

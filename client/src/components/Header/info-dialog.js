@@ -46,7 +46,8 @@ export const InfoDialog = ({ openInfo, setInfoOpen }) => {
             week to see ShufflePlus begin skipping repeated songs.
 					</li>
 				</ul>
-        You can contact the developer on{" "}
+				<br />
+        Share feedback and suggestions @{" "}
 				<a
 					href="https://twitter.com/jj_fryer"
 					target="_blank"

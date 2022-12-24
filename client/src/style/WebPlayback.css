@@ -23,7 +23,7 @@ button {
 
 .main-wrapper {
   padding-top: 1.5pc;
-    padding-bottom: 1.5pc;
+  padding-bottom: 1.5pc;
   align-items: center;
   display: flex;
   height: 100%;
@@ -92,8 +92,8 @@ button {
 
 .now-playing__sidePanel_Details {
   display: flex;
-  justify-content: space-around;
-  width:100%
+  justify-content: space-between;
+  width: 100%;
 }
 
 .btn-spotify-container .btn-spotify:nth-of-type(2n) {
@@ -152,10 +152,6 @@ button {
   top: 1px;
 }
 
-.btn-login:hover {
-  background-color: #3eb35d;
-}
-
 img {
   background: transparent;
 }
@@ -173,8 +169,7 @@ img {
   border-radius: 10px;
   flex-shrink: 0;
   margin-top: 30px;
-  min-width: 375px;
-  max-width: 25%;
+  width: 555px;
 }
 
 .controls-container-item h3 {
@@ -297,12 +292,12 @@ img {
   color: var(--spotify-primary);
 }
 
-.left_col{
+.left_col {
   display: flex;
   flex-direction: column;
 }
 
-.right_col{
+.right_col {
   display: flex;
   flex-direction: column;
 }
@@ -322,5 +317,9 @@ img {
 
   .now-playing__sidePanel_Details {
     margin: 15px 0px 0px 0px;
+  }
+
+  .controls-container-item {
+    width: 90%;
   }
 }
