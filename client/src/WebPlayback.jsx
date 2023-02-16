@@ -6,7 +6,7 @@ import "./style/WebPlayback.css";
 import spotifyIcon from "./assets/Spotify_Icon_White.png";
 import explicitIcon from "./assets/19badge-dark.png";
 import { UserContext } from "./services/UserContext";
-import {Redirect} from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 var track = {
 	name: "",
@@ -103,8 +103,10 @@ function WebPlayback() {
 				var newTrack = state.track_window.current_track;
 				if (newTrack.name != currentTrack.name && newTrack.name != "")
 				{
+					console.log(`current track name: ${currentTrack.name}, newTrack name: ${newTrack.name}`);
 					console.log("state change", newTrack);
 					setTrack(newTrack);
+					updatePageTrackDetails();
 				}
 				setPaused(state.paused);
 				const progressObj = {
@@ -127,7 +129,7 @@ function WebPlayback() {
 		};
 	}, []);
 
-	useEffect(() => {
+	const updatePageTrackDetails = () => {
 		if (currentTrack.id === undefined) {
 			return;
 		}
@@ -149,10 +151,12 @@ function WebPlayback() {
 			})
 			.catch((err) => console.log(err));
 
-	}, [currentTrack]);
+	};
 
 	const nextTrack = () => {
-		//console.log(`next track called`);
+		console.log("next track called");
+		console.log("playerObj is ", playerObj);
+
 		playerObj.nextTrack();
 	};
 
@@ -207,11 +211,11 @@ function WebPlayback() {
 			//console.log("rgb after floor: ", rgb);
 
 			if (rgb.r == 0 && rgb.g == 0 && rgb.b == 0) {
-				console.log("setting rgb to DEFAULT. rgb input was: ", rgb);
+				//console.log("setting rgb to DEFAULT. rgb input was: ", rgb);
 				setAvgBgColour(defaultRGB);
 			}
 			else {
-				console.log("original rgb",rgb);
+				//console.log("original rgb",rgb);
 				rgb = isItTooDark(rgb);
 				setAvgBgColour(rgb);
 			}
@@ -234,7 +238,7 @@ function WebPlayback() {
 			rgb.r = ~~(rgb.r - (rgb.r * percent));
 			rgb.g = ~~(rgb.g - (rgb.g * percent));
 			rgb.b = ~~(rgb.b - (rgb.b * percent));
-			console.log("rgb is made darker shade", rgb);
+			//console.log("rgb is made darker shade", rgb);
 			return rgb;
 		} 
 		else {
@@ -243,7 +247,7 @@ function WebPlayback() {
 			rgb.r = ~~(rgb.r + (rgb.r * percent));
 			rgb.g = ~~(rgb.g + (rgb.g * percent));
 			rgb.b = ~~(rgb.b + (rgb.b * percent));
-			console.log("rgb is made lighter shade", rgb);
+			//console.log("rgb is made lighter shade", rgb);
 			return rgb;
 		}
 	};
@@ -318,12 +322,12 @@ function WebPlayback() {
 											style={{
 												width: 25,
 												padding: 12.5
-											// spotify requires half of height for padding
+												// spotify requires half of height for padding
 											}}
 										/>
 									)}
 								</div>				
-							
+
 							</div>
 							<TrackProgressBar
 								duration={trackProgress.duration}

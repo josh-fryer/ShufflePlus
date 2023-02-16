@@ -38,7 +38,7 @@ npm install
 ```
 and the same for the client:
 ```bash
-npm client-install
+npm run client-install
 ```
 ## Run the app
 
