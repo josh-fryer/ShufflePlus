@@ -13,7 +13,7 @@
 }
 
 .github-btn {
-  font-size: 39px;
+  font-size: 2.4pc;
   padding: 10px;
   color: rgb(255, 255, 255);
   transition: all 0.1s;
@@ -34,7 +34,7 @@
 }
 
 .fa-stack {
-  font-size: 20px;
+  font-size: 1.2pc;
 }
 .fa-stack i {
   vertical-align: middle;
@@ -68,9 +68,9 @@ header {
 }
 
 .header-title {
-  font-size: 28px;
+  font-size: 20px;
   font-weight: bold;
-  padding: 15px;
+  padding: 13px;
 }
 
 .header-title a {
@@ -88,11 +88,12 @@ header {
 .footer-wrapper {
   flex-wrap: wrap;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
   padding-top: 10px;
   padding-bottom: 10px;
-  max-width: 1140px;
+  max-width: -moz-fit-content;
+  max-width: fit-content;
   padding-left: 1rem;
   padding-right: 1rem;
   margin-left: auto;
@@ -117,7 +118,7 @@ header {
   margin-top: 20px;
   padding-bottom: 12px;
   width: -moz-max-content; /* Firefox/Gecko */
-  width: -webkit-max-content; /* Chrome */
+  width: max-content;
   width: intrinsic; /* Safari/WebKit uses a non-standard name */
   font-size: 35px;
   font-size: calc(16px + 3vw);
