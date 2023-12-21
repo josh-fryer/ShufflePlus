@@ -7,8 +7,6 @@ import { UserContext } from "../services/UserContext";
 
 var myStorage;
 
-var prevTrackId = "";
-
 // better implementation but would need to convert previosly saved array:
 // const genreOptions = [
 //   { name: "rock", enabled: true },
@@ -152,11 +150,8 @@ const ShuffleControls = ({ nextTrack, currentTrack, isPaused }) => {
 
 	const skipTrack = (track) => {
 		var dNow = new Date().getTime();
-
 		const week = 604800000; // a week in milliseconds
-
 		var trackD = new Date(track.datePlayed).getTime();
-
 		var weekAgo = dNow - week;
 
 		// within a week so, skip track
@@ -202,6 +197,7 @@ const ShuffleControls = ({ nextTrack, currentTrack, isPaused }) => {
 	}, [artistGenres]);
 
 	useEffect(() => {
+		console.log("entering use effect for skip and save of track");
 		// reset used timeout
 		if (skipTimeout != null) {
 			clearTimeout(skipTimeout);
@@ -210,13 +206,8 @@ const ShuffleControls = ({ nextTrack, currentTrack, isPaused }) => {
 
 		let trackIndex = -1;
 
-		if (
-			currentTrack.id != "" &&
-      currentTrack.id != prevTrackId &&
-      Object.keys(currentTrack).length !== 0
-		) {
-			// prevents loops from SDK
-			prevTrackId = currentTrack.id;
+		if (currentTrack.id != "" && Object.keys(currentTrack).length !== 0) 
+		{
 
 			if (myStorage != false) {
 				var trackHistory = JSON.parse(

@@ -57,12 +57,15 @@ export const SaveTrack = (track, trackIndex) => {
 			trackObj.datePlayed = dateToday;
 
 			saveTrackHistory(trackHistoryParse);
-			console.log("Updated track history: ", trackHistoryParse);
+			const lastTrackIndex = trackHistoryParse.songs.length-1;
+
+			console.log("Updated this song in track history: ", trackHistoryParse.songs[lastTrackIndex]);
 		} else {
 			// add new track to track history
 			trackHistoryParse.songs.push(prepTrack);
 			saveTrackHistory(trackHistoryParse);
-			console.log("added new song to track history: ", trackHistoryParse);
+			const lastTrackIndex = trackHistoryParse.songs.length-1;
+			console.log("added new song to track history: ", trackHistoryParse.songs[lastTrackIndex]);
 		}
 	}
 };
