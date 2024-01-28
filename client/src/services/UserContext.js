@@ -28,7 +28,7 @@ export const UserContextProvider = ({ children }) => {
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				console.log("new token: " + data.access_token);
+				console.log("Set new token");
 				setToken(data.access_token);
 			})
 			.catch((err) => console.log("error getting new token: ", err));

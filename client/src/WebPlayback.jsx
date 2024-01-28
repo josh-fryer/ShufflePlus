@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import ShuffleControls from "./features/ShuffleControls";
 import TrackProgressBar from "./features/TrackProgressBar";
-import getAvgColourToBackground from "./features/getAvgColourToBackground";
 import OpenSpotifyLink from "./components/track_link";
 import "./style/WebPlayback.css";
 import spotifyIcon from "./assets/Spotify_Icon_White.png";
@@ -17,11 +16,9 @@ var track = {
 	artists: [{ name: "" }],
 };
 
-var stateChange = 0;
-
 function WebPlayback() {
 	const context = useContext(UserContext);
-	const [intialTimeStart, setIntialTimeStart] = useState(0);
+	const [initialTimeStart, setInitialTimeStart] = useState(0);
 	const [is_paused, setPaused] = useState(false);
 	const [is_active, setActive] = useState(false);
 	const [playerObj, setPlayerObj] = useState(undefined);
@@ -49,15 +46,14 @@ function WebPlayback() {
 					console.log("GET TOKEN cb");
 
 					if (context.token === "") {
-						//console.log("get initial token");
 						await context.getToken();
 					} else {
 						let d = new Date().getTime();
 						// compare time. if over 30 mins, refresh token
-						if (d > intialTimeStart + 30 * 60000) {
-							setIntialTimeStart(d);
+						if (d > initialTimeStart + 30 * 60000) {
+							setInitialTimeStart(d);
 							// token has expired. get new token:
-							console.log("get new token.");
+							console.log("Retrieving new token.");
 							await context.refreshToken();
 						}
 					}
@@ -86,7 +82,6 @@ function WebPlayback() {
 
 			player.on("playback_error", ({ message }) => {
 				console.error("Failed to perform playback", message);
-				//console.log("playerObj = ", playerObj);
 			});
 
 			player.addListener("ready", ({ device_id }) => {
@@ -103,7 +98,6 @@ function WebPlayback() {
 				}
 
 				const newTrack = state.track_window.current_track;
-				//console.log(`current track name: ${newTrack.name}`);
 				setTrack(newTrack);
 				
 				setPaused(state.paused);
@@ -133,7 +127,6 @@ function WebPlayback() {
 			console.log("curr track is undefined ", currentTrack);
 			return;
 		}
-		console.log("curr track is valid ", currentTrack);
 		// let avgColour = getAvgColourToBackground(currentTrack.album.images[0].url);
 		// if(avgColour !== undefined)
 		// {

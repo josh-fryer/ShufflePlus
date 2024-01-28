@@ -36,8 +36,7 @@ const TrackProgressBar = ({ duration, position, isPaused, isActive }) => {
 			newPosition = livePosition + 1000;
 
 			// check if newPosition is not over the duration of its track
-			if (newPosition <= duration) {
-				//console.log(i + ") newPosition ", newPosition);
+			if (newPosition <= duration) {				
 				setDisplayPosition(formatTime(newPosition));
 				setLivePosition(newPosition);
 			}

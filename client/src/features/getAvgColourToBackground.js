@@ -1,5 +1,4 @@
 const getAvgColourToBackground = (imageURL) => {
-	//console.log("called avg colour func");
 	var imgEl = new Image(300,300); 
 	imgEl.src = imageURL;
 	imgEl.crossOrigin = "Anonymous";

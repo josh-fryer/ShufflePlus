@@ -197,7 +197,6 @@ const ShuffleControls = ({ nextTrack, currentTrack, isPaused }) => {
 	}, [artistGenres]);
 
 	useEffect(() => {
-		console.log("entering use effect for skip and save of track");
 		// reset used timeout
 		if (skipTimeout != null) {
 			clearTimeout(skipTimeout);
