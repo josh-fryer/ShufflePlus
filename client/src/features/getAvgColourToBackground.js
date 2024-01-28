@@ -53,7 +53,6 @@ const getAvgColourToBackground = (imageURL) => {
 		}
 		else {
 			rgb = isItTooDark(rgb);
-			console.log("exported rgb is ",rgb);
 			return rgb;
 		}
 	}

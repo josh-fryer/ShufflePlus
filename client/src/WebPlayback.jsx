@@ -103,9 +103,8 @@ function WebPlayback() {
 				}
 
 				const newTrack = state.track_window.current_track;
-				console.log(`current track name: ${newTrack.name}`);
+				//console.log(`current track name: ${newTrack.name}`);
 				setTrack(newTrack);
-				//updatePageTrackDetails(); replaced b y useEffect
 				
 				setPaused(state.paused);
 				const progressObj = {
@@ -135,12 +134,12 @@ function WebPlayback() {
 			return;
 		}
 		console.log("curr track is valid ", currentTrack);
-		let avgColour = getAvgColourToBackground(currentTrack.album.images[0].url);
-		if(avgColour !== undefined)
-		{
-			setAvgBgColour(avgColour);
-			console.log("avg colour is ", avgBgColour);
-		}
+		// let avgColour = getAvgColourToBackground(currentTrack.album.images[0].url);
+		// if(avgColour !== undefined)
+		// {
+		// 	setAvgBgColour(avgColour);
+		// 	console.log("avg colour is ", avgBgColour);
+		// }
 		
 		let id = currentTrack.id;
 
@@ -161,7 +160,6 @@ function WebPlayback() {
 
 	const nextTrack = () => {
 		console.log("next track called");
-
 		playerObj.nextTrack();
 	};
 

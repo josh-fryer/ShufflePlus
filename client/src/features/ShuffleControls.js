@@ -7,7 +7,7 @@ import { UserContext } from "../services/UserContext";
 
 var myStorage;
 
-// better implementation but would need to convert previosly saved array:
+// better implementation but would need to convert previously saved array:
 // const genreOptions = [
 //   { name: "rock", enabled: true },
 //   { name: "pop", enabled: true },
@@ -220,6 +220,7 @@ const ShuffleControls = ({ nextTrack, currentTrack, isPaused }) => {
 						(x) => x.songId === currentTrack.id
 					);
 
+					// track is found if > -1
 					if (trackIndex > -1) {
 						const track = trackHistory.songs[trackIndex];
 
