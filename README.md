@@ -1,13 +1,13 @@
 # [ShufflePlus](https://shuffleplus.app)
 **Approved by Spotify :white_check_mark:**
 
-This web app provides controls to improve shuffle playback on Spotify. I bulit this app to improve the randomness of Spotify shuffle and to avoid repeating tracks as often on large playlists.
+This web app provides controls to improve shuffle playback on Spotify. I built this app to improve the randomness of Spotify shuffle and to avoid repeating tracks as often.
 
 Try it now @ [ShufflePlus.app](https://shuffleplus.app)
 
 ### How it works
 When you play a track, its details are saved locally offline to your browser storage.
-The track's details are used in optional ShufflePlus functions to skip recently played tracks, or skip tracks related to your selected genres.
+The track's details are used in optional ShufflePlus functions to skip recently played tracks or tracks related to your selected genres.
 
 ## Using your own credentials
 
