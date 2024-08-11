@@ -114,6 +114,7 @@ button.btn-spotify  {
   height: 46px;
   width: 46px;
   justify-content: center;
+  align-items: center;
 }
 
 .btn-spotify {
