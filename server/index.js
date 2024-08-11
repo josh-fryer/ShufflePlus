@@ -17,7 +17,6 @@ var spotify_client_secret = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
 var spotify_redirect_uri = "";
 
 if (process.env.NODE_ENV === "production") {
-	//spotify_redirect_uri = "https://shuffle-plus-001.herokuapp.com/auth/callback";
 	spotify_redirect_uri = "https://shuffleplus.app/auth/callback";
 } else {
 	spotify_redirect_uri = "http://localhost:3000/auth/callback";

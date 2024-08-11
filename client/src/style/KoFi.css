@@ -66,6 +66,7 @@ a.kofi-button {
   text-shadow: none;
   font-weight: 700 !important;
   font-size: 14px !important;
+  margin: 3px;
 }
 a.kofi-button:visited {
   color: #fff !important;

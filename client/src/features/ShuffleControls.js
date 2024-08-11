@@ -70,9 +70,9 @@ const ShuffleControls = ({ nextTrack, currentTrack, isPaused }) => {
 	const [skip, setSkip] = useState(false);
 	const [genres, setGenres] = useState(() => {
 		genreOptions.sort();
-		return genreOptions.map((subarr) => [...subarr]);
+		return genreOptions.map((subarr) => [...subarr]); // ensure it makes copies of array not references.
 	});
-	//const [token, setToken] = useState(receivedToken);
+
 	const [artistGenres, setArtistGenres] = useState([]);
 	const [showReset, setShowReset] = useState(false);
 	const [showToast, setToast] = useState(false);

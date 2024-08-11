@@ -106,6 +106,14 @@ button {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  text-align: center;
+}
+
+button.btn-spotify  {
+  display: flex;
+  height: 46px;
+  width: 46px;
+  justify-content: center;
 }
 
 .btn-spotify {

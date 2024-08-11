@@ -261,7 +261,6 @@ function WebPlayback() {
 										<i className="fas fa-pause"></i>
 									)}
 								</button>
-
 								<button
 									className="btn-spotify"
 									onClick={() => {

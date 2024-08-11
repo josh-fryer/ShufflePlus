@@ -3,6 +3,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
+import XLogoBlack from "../../assets/X_logo-black.png";
 
 export const InfoDialog = ({ openInfo, setInfoOpen }) => {
 	return (
@@ -47,15 +48,20 @@ export const InfoDialog = ({ openInfo, setInfoOpen }) => {
 					</li>
 				</ul>
 				<br />
-        Share feedback and suggestions @{" "}
+        Share feedback and suggestions at{" "}
 				<a
 					href="https://twitter.com/jj_fryer"
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-          Twitter
+					<img
+						src={XLogoBlack}
+						alt="X Logo"
+						style={{
+							height: 18,
+						}}
+					/>
 				</a>
-        .
 			</DialogContent>
 		</Dialog>
 	);

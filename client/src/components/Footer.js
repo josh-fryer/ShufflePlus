@@ -6,16 +6,15 @@ const Footer = () => {
 		<div className="footer">
 			<div className="footer-wrapper">
 				<div style={{ padding: 10 }}>Made by Josh Fryer.</div>
-				<KoFi color="#29abe0" id="L3L7R7WE" label="Support this site" />
+				<KoFi color="#29abe0" id="L3L7R7WE" label="Buy me a coffee" />
 				<a
 					className="twitter-link"
 					href="https://twitter.com/jj_fryer"
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					<span className="fa-stack fa-2x" style={{ padding: 10 }}>
-						<i className="fas fa-circle fa-stack-2x"></i>
-						<i className="twitter-bird fab fa-twitter fa-stack-1x fa-inverse"></i>
+					<span style={{ padding: 12 }}>
+						<i className="fa-brands fa-x-twitter fa-xl"></i>						
 					</span>
 				</a>
 				<a
@@ -32,7 +31,7 @@ const Footer = () => {
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-          Uses Spotify API and Player SDK
+            Spotify API and Player SDK
 				</a>
 				<img
 					src={logo}
