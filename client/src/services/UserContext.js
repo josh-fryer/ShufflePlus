@@ -5,8 +5,8 @@ export const UserContext = createContext();
 export const UserContextProvider = ({ children }) => {
 	const [token, setToken] = useState("");
 
-	const getToken = () => {
-		fetch("/auth/token", {
+	const getToken = async () => {
+		return await fetch("/auth/token", {
 			headers: {
 				"Content-Type": "application/json",
 				Accept: "application/json",
@@ -15,12 +15,13 @@ export const UserContextProvider = ({ children }) => {
 			.then((res) => res.json())
 			.then((data) => {
 				setToken(data.access_token);
+				return data.access_token;
 			})
 			.catch((err) => console.log(err));
 	};
 
-	const refreshToken = () => {
-		fetch("/auth/new-token", {
+	const refreshToken = async () => {
+		return await fetch("/auth/new-token", {
 			headers: {
 				"Content-Type": "application/json",
 				Accept: "application/json",
@@ -28,8 +29,9 @@ export const UserContextProvider = ({ children }) => {
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				console.log("Set new token");
+				console.log("Set new token in server. Data: ",data);
 				setToken(data.access_token);
+				return data.access_token;
 			})
 			.catch((err) => console.log("error getting new token: ", err));
 	};

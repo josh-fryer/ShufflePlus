@@ -18,7 +18,7 @@ var track = {
 
 function WebPlayback() {
 	const context = useContext(UserContext);
-	const [initialTimeStart, setInitialTimeStart] = useState(0);
+	const [tokenTimeStarted, setTokenTimeStarted] = useState(0);
 	const [is_paused, setPaused] = useState(false);
 	const [is_active, setActive] = useState(false);
 	const [playerObj, setPlayerObj] = useState(undefined);
@@ -44,21 +44,28 @@ function WebPlayback() {
 				name: "ShufflePlus Player",
 				getOAuthToken: async (cb) => {
 					console.log("GET TOKEN cb");
-
-					if (context.token === "") {
-						await context.getToken();
-					} else {
-						let d = new Date().getTime();
+					let accessToken = await context.getToken();
+					
+					if (!accessToken) {
+						console.error("Token could not be fetched");
+						return;
+					}
+					
+					let d = new Date().getTime();
+					if (tokenTimeStarted > 0) {
 						// compare time. if over 30 mins, refresh token
-						if (d > initialTimeStart + 30 * 60000) {
-							setInitialTimeStart(d);
+						if (d > (tokenTimeStarted + 30 * 60000)) {
+							setTokenTimeStarted(d);
 							// token has expired. get new token:
 							console.log("Retrieving new token.");
-							await context.refreshToken();
+							accessToken = await context.refreshToken();
 						}
+					} else {
+						setTokenTimeStarted(d);
 					}
-
-					cb(context.token);
+					
+					console.log("new token sending to Spotify Player: "+ accessToken);
+					cb(accessToken);
 				},
 				volume: 1, // 1 = full volume
 			});
