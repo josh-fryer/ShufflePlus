@@ -30,7 +30,7 @@ function WebPlayback() {
 		timestamp: 0,
 	});
 	// eslint-disable-next-line no-unused-vars
-	const [avgBgColour, setAvgBgColour] = useState({r:46,g:46,b:46});
+	const [avgBgColour, setAvgBgColour] = useState({ r: 46, g: 46, b: 46 });
 
 	useEffect(() => {
 		const script = document.createElement("script");
@@ -106,7 +106,7 @@ function WebPlayback() {
 
 				const newTrack = state.track_window.current_track;
 				setTrack(newTrack);
-				
+
 				setPaused(state.paused);
 				const progressObj = {
 					duration: state.duration,
@@ -124,7 +124,7 @@ function WebPlayback() {
 		};
 
 		return function cleanUp() {
-			setPlayerObj(undefined);			
+			setPlayerObj(undefined);
 		};
 	}, []);
 
@@ -140,7 +140,7 @@ function WebPlayback() {
 		// 	setAvgBgColour(avgColour);
 		// 	console.log("avg colour is ", avgBgColour);
 		// }
-		
+
 		let id = currentTrack.id;
 
 		fetch(`https://api.spotify.com/v1/tracks/${id}`, {
@@ -152,10 +152,10 @@ function WebPlayback() {
 		})
 			.then((res) => res.json())
 			.then((data) => {
+				// spotify api rules to show explicit
 				data.explicit ? setIsExplicit(true) : setIsExplicit(false);
 			})
 			.catch((err) => console.log("fetch track error: ", err));
-
 	}, [currentTrack]);
 
 	const nextTrack = () => {
@@ -171,19 +171,23 @@ function WebPlayback() {
 		height: "100%",
 		width: "100%",
 		margin: 0,
-		padding: 0
+		padding: 0,
 	};
 
 	if (!is_active) {
 		return (
 			<>
 				<div className="container">
-					<div className="main-wrapper">
+					<div className="main-wrapper-InActive">
 						<b>
 							{" "}
-              Transfer your playback to ShufflePlus from the device list in the
-              Spotify app.
+							Transfer your playback to ShufflePlus from the device list in the
+							Spotify app.
 						</b>
+						<br />
+						<br />
+						If ShufflePlus is not appearing in the devices list, try logging out
+						and log in again.
 					</div>
 				</div>
 			</>
@@ -191,9 +195,7 @@ function WebPlayback() {
 	} else {
 		return (
 			<>
-				<div
-					style={ playerContainerStyle }
-				>
+				<div style={playerContainerStyle}>
 					<div className="main-wrapper">
 						<img
 							src={currentTrack.album.images[0].url}
@@ -214,7 +216,6 @@ function WebPlayback() {
 											{currentTrack.artists[0].name}
 										</OpenSpotifyLink>
 									</div>
-								
 								</div>
 								<div className="right_col">
 									<img
@@ -222,7 +223,7 @@ function WebPlayback() {
 										alt="Spotify Icon"
 										style={{
 											width: 25,
-											padding: 12.5
+											padding: 12.5,
 											// spotify requires half of height for padding
 										}}
 									/>
@@ -232,13 +233,12 @@ function WebPlayback() {
 											alt="Explicit track warning"
 											style={{
 												width: 25,
-												padding: 12.5
+												padding: 12.5,
 												// spotify requires half of height for padding
 											}}
 										/>
 									)}
-								</div>				
-
+								</div>
 							</div>
 							<TrackProgressBar
 								duration={trackProgress.duration}
@@ -276,10 +276,8 @@ function WebPlayback() {
 								>
 									<i className="fas fa-forward"></i>
 								</button>
-
 							</div>
-							
-						</div>			
+						</div>
 					</div>
 				</div>
 				<ShuffleControls
