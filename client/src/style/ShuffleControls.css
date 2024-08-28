@@ -1,0 +1,130 @@
+/* styles caret on skip by week control */
+#caret {
+	margin: 0px 0px 0px 4px;
+}
+
+.controls-container {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	justify-content: space-evenly;
+	margin-bottom: 20px;
+}
+
+.controls-container-item {
+	background-color: white;
+	border-radius: 10px;
+	flex-shrink: 0;
+	margin-top: 30px;
+	width: 555px;
+}
+
+.controls-container-item h3 {
+	margin-bottom: 14px;
+}
+
+.controls-content {
+	margin: 10px;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.controls-button {
+	background-color: var(--spotify-primary);
+	border-radius: 28px;
+	border: 1px solid #18ab29;
+	display: inline-block;
+	cursor: pointer;
+	color: #ffffff;
+	font-size: 17px;
+	padding: 5px 80px;
+	text-decoration: none;
+	width: 100%;
+	font-weight: bold;
+	transition: all 0.2s;
+}
+
+.controls-button:hover {
+	background: #189544;
+}
+
+.controls-button:active {
+	position: relative;
+	top: 1px;
+}
+
+.genres-btn-container {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+}
+
+.genres-btn {
+	display: inline-flex;
+	background-color: var(--spotify-primary);
+	border: 2px solid;
+	cursor: pointer;
+	color: white;
+	text-decoration: none;
+	font-weight: bold;
+	transition: all 0.1s;
+	padding: 3px;
+	font-size: 17px;
+}
+
+.genres-btn:hover {
+	background-color: #189544;
+}
+
+.btn-disabled {
+	opacity: 0.5;
+	background-color: #838383;
+}
+
+.btn-disabled:hover {
+	background-color: #838383;
+	opacity: 0.7;
+}
+
+.reset-btn {
+	background-color: transparent;
+	border-radius: 28px;
+	border: 2px solid #18ab29;
+	display: inline-block;
+	cursor: pointer;
+	font-size: 14px;
+	padding: 2px 8px;
+	text-decoration: none;
+	font-weight: bold;
+	transition: all 0.2s;
+}
+
+.reset-btn:hover {
+	background-color: #44c767;
+	border-color: #44c767;
+	color: white;
+}
+
+.reset-btn:active {
+	position: relative;
+	top: 1px;
+}
+
+.genres-btn-bar {
+	margin-bottom: 5px;
+	border-bottom: 1px solid rgba(128, 128, 128, 0.664);
+	padding: 5px;
+	display: inline-flex;
+	flex-flow: row-reverse;
+	flex-grow: 1;
+	width: 100%;
+}
+
+/* Media queries must be at the end of file to ovverride above */
+@media only screen and (max-width: 768px) {
+	/* For mobile phones: */
+	.controls-container-item {
+		width: 90%;
+	}
+}

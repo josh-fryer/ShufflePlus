@@ -4,6 +4,8 @@ import Snackbar from "@mui/material/Snackbar";
 import Slide from "@mui/material/Slide";
 import * as storage from "../services/localStorage";
 import { UserContext } from "../services/UserContext";
+import { Dropdown, MenuButton, Menu, MenuItem } from "@mui/base";
+import "../style/ShuffleControls.css";
 
 var myStorage;
 
@@ -72,11 +74,11 @@ const ShuffleControls = ({ nextTrack, currentTrack, isPaused }) => {
 		genreOptions.sort();
 		return genreOptions.map((subarr) => [...subarr]); // ensure it makes copies of array not references.
 	});
-
 	const [artistGenres, setArtistGenres] = useState([]);
 	const [showReset, setShowReset] = useState(false);
 	const [showToast, setToast] = useState(false);
 	const [toastMsg, setToastMsg] = useState("");
+	const [weekMultiplier, setWeekMultiplier] = useState(1);
 
 	useEffect(() => {
 		myStorage = storage.isStorageSupported();
@@ -137,10 +139,8 @@ const ShuffleControls = ({ nextTrack, currentTrack, isPaused }) => {
 			const startFetchCalls = async () => {
 				// let tokenResult = await getToken(); // get latest token
 				// setToken(tokenResult.access_token);
-
 				let artistId = await getArtistId();
 				let artistGResult = await getArtistGenres(artistId);
-
 				setArtistGenres(artistGResult.genres);
 			};
 
@@ -151,15 +151,19 @@ const ShuffleControls = ({ nextTrack, currentTrack, isPaused }) => {
 	const skipTrack = (track) => {
 		var dNow = new Date().getTime();
 		const week = 604800000; // a week in milliseconds
+		let dateMs = week * weekMultiplier;
 		var trackD = new Date(track.datePlayed).getTime();
-		var weekAgo = dNow - week;
 
-		// within a week so, skip track
-		if (trackD > weekAgo) {
-			console.log(`skipping > ${track.name}, played less than a week ago!`);
+		var startDateToCompare = dNow - dateMs;
+
+		// within the date range so skip track
+		if (trackD > startDateToCompare) {
+			console.log(
+				`skipping > ${track.name}, played less than ${weekMultiplier} weeks ago!`,
+			);
 			skipCount++;
 			handleToastOpen(
-				"Track was played less than a week ago. Skipping track..."
+				"Track was played less than a week ago. Skipping track...",
 			);
 			skipTimeout = setTimeout(nextTrack, 2000);
 		}
@@ -183,7 +187,7 @@ const ShuffleControls = ({ nextTrack, currentTrack, isPaused }) => {
 					if (artistGenres[i].includes(g)) {
 						console.log(`Matched Genre ${g}. Skip: ${currentTrack.name}`);
 						next = true;
-						 return next; // break loop
+						return next; // break loop
 					}
 				}
 			});
@@ -205,25 +209,23 @@ const ShuffleControls = ({ nextTrack, currentTrack, isPaused }) => {
 
 		let trackIndex = -1;
 
-		if (currentTrack.id != "" && Object.keys(currentTrack).length !== 0) 
-		{
-
+		if (currentTrack.id != "" && Object.keys(currentTrack).length !== 0) {
 			if (myStorage != false) {
 				var trackHistory = JSON.parse(
-					myStorage.getItem("ShufflePlusTrackHistory")
+					myStorage.getItem("ShufflePlusTrackHistory"),
 				);
 
 				if (trackHistory != null) {
 					// find current track in storage
 					trackIndex = trackHistory.songs.findIndex(
-						(x) => x.songId === currentTrack.id
+						(x) => x.songId === currentTrack.id,
 					);
 
 					// track is found if > -1
 					if (trackIndex > -1) {
 						const track = trackHistory.songs[trackIndex];
 
-						// check if track was played in last week
+						// check if track was played in last selected date length
 						if (skip) {
 							skipTrack(track);
 						}
@@ -288,7 +290,44 @@ const ShuffleControls = ({ nextTrack, currentTrack, isPaused }) => {
 		<div className="controls-container">
 			<div className="controls-container-item">
 				<div className="controls-content">
-					<h3>Skip songs played in the last week:</h3>
+					<h3>Skip songs played in the last</h3>
+					<Dropdown>
+						<MenuButton className="dropdown-menuButton">
+							{weekMultiplier}
+							<i id="caret" className="fa-solid fa-caret-down"></i>
+						</MenuButton>
+						<Menu className="dropdown-list">
+							<MenuItem
+								onClick={() => {
+									setWeekMultiplier(1);
+								}}
+							>
+								1
+							</MenuItem>
+							<MenuItem
+								onClick={() => {
+									setWeekMultiplier(2);
+								}}
+							>
+								2
+							</MenuItem>
+							<MenuItem
+								onClick={() => {
+									setWeekMultiplier(3);
+								}}
+							>
+								3
+							</MenuItem>
+							<MenuItem
+								onClick={() => {
+									setWeekMultiplier(4);
+								}}
+							>
+								4
+							</MenuItem>
+						</Menu>
+					</Dropdown>
+					<h3>weeks</h3>
 					<button
 						className="controls-button"
 						type="button"
@@ -314,7 +353,7 @@ const ShuffleControls = ({ nextTrack, currentTrack, isPaused }) => {
 								className="reset-btn"
 								onClick={() => resetGenres()}
 							>
-                RESET
+								RESET
 							</button>
 						</div>
 					)}

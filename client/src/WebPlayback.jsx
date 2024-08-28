@@ -145,6 +145,7 @@ function WebPlayback() {
 		})
 			.then((res) => res.json())
 			.then((data) => {
+				// spotify api rules to show explicit
 				data.explicit ? setIsExplicit(true) : setIsExplicit(false);
 			})
 			.catch((err) => console.log("fetch track error: ", err));
