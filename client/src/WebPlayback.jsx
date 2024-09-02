@@ -18,7 +18,7 @@ var track = {
 
 function WebPlayback() {
 	const context = useContext(UserContext);
-	const [tokenTimeStarted, setTokenTimeStarted] = useState(0);
+	const [hasWebPlayerInitialized, setHasWebPlayerInitialized] = useState(false);
 	const [is_paused, setPaused] = useState(false);
 	const [is_active, setActive] = useState(false);
 	const [playerObj, setPlayerObj] = useState(undefined);
@@ -29,6 +29,8 @@ function WebPlayback() {
 		position: 0,
 		timestamp: 0,
 	});
+	const [key, setKey] = useState(Math.random());
+
 	// eslint-disable-next-line no-unused-vars
 	const [avgBgColour, setAvgBgColour] = useState({ r: 46, g: 46, b: 46 });
 
@@ -43,28 +45,27 @@ function WebPlayback() {
 			const player = new window.Spotify.Player({
 				name: "ShufflePlus Player",
 				getOAuthToken: async (cb) => {
-					console.log("GET TOKEN cb");
+					// Is called by spotify first to initialise, then after the token expires in 1hr to retrieve a new token
+
+					console.log("GET ACCESS TOKEN for web player SDK");
 					let accessToken = await context.getToken();
-					
+
 					if (!accessToken) {
 						console.error("Token could not be fetched");
 						return;
 					}
-					
-					let d = new Date().getTime();
-					if (tokenTimeStarted > 0) {
-						// compare time. if over 30 mins, refresh token
-						if (d > (tokenTimeStarted + 30 * 60000)) {
-							setTokenTimeStarted(d);
-							// token has expired. get new token:
-							console.log("Retrieving new token.");
-							accessToken = await context.refreshToken();
-						}
+
+					if (hasWebPlayerInitialized) {
+						// token has expired. get new token:
+						console.log("Retrieving new access token.");
+						accessToken = await context.refreshToken();
 					} else {
-						setTokenTimeStarted(d);
+						setHasWebPlayerInitialized(true);
 					}
-					
-					console.log("new token sending to Spotify Player: "+ accessToken);
+
+					console.log(
+						"new access token sending to Spotify Player SDK: " + accessToken,
+					);
 					cb(accessToken);
 				},
 				volume: 1, // 1 = full volume
@@ -116,7 +117,10 @@ function WebPlayback() {
 				setTrackProgress(progressObj);
 
 				player.getCurrentState().then((state) => {
-					!state ? setActive(false) : setActive(true);
+					state ? setActive(true) : setActive(false);
+					if (state == false) {
+						console.log("player state is false");
+					}
 				});
 			});
 
@@ -156,6 +160,9 @@ function WebPlayback() {
 				data.explicit ? setIsExplicit(true) : setIsExplicit(false);
 			})
 			.catch((err) => console.log("fetch track error: ", err));
+
+		// reset track progress bar and any other dependent components
+		setKey(Math.random());
 	}, [currentTrack]);
 
 	const nextTrack = () => {
@@ -241,6 +248,7 @@ function WebPlayback() {
 								</div>
 							</div>
 							<TrackProgressBar
+								key={key}
 								duration={trackProgress.duration}
 								position={trackProgress.position}
 								isPaused={is_paused}

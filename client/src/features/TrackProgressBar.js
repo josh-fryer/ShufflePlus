@@ -5,9 +5,9 @@ var addSecond = null; // store interval
 var newPosition = 0;
 
 const TrackProgressBar = ({ duration, position, isPaused, isActive }) => {
-	const [displayPosition, setDisplayPosition] = useState("00:00");
-	const [livePosition, setLivePosition] = useState(0);
-	const [displayDuration, setDisplayDuration] = useState("00:00");
+	const [displayTrackProgress, setDisplayTrackProgress] = useState("00:00"); // formmatted track progresss time
+	const [currentTrackProgressTime, setCurrentTrackProgressTime] = useState(0); // current track progress in ms
+	const [maxDurationOfTrack, setMaxDurationOfTrack] = useState("00:00"); // the max duration of the track
 
 	const formatTime = (ms) => {
 		var seconds = Math.floor((ms / 1000) % 60);
@@ -24,6 +24,11 @@ const TrackProgressBar = ({ duration, position, isPaused, isActive }) => {
 		return timeStr;
 	};
 
+	const setTrackProgressBarTimeandPosition = (timePosition) => {
+		setDisplayTrackProgress(formatTime(timePosition));
+		setCurrentTrackProgressTime(timePosition);
+	};
+
 	// Stops addSecondInterval
 	const resetInterval = (interval) => {
 		clearInterval(interval);
@@ -33,15 +38,18 @@ const TrackProgressBar = ({ duration, position, isPaused, isActive }) => {
 
 	const startAddSecondsToTrackPosition = () => {
 		addSecond = setInterval(() => {
-			newPosition = livePosition + 1000;
+			newPosition = currentTrackProgressTime + 1000;
 
 			// check if newPosition is not over the duration of its track
-			if (newPosition <= duration) {				
-				setDisplayPosition(formatTime(newPosition));
-				setLivePosition(newPosition);
+			if (newPosition <= duration) {
+				setTrackProgressBarTimeandPosition(newPosition);
 			}
 		}, 1000);
 	};
+
+	useEffect(() => {
+		setMaxDurationOfTrack(formatTime(duration));
+	}, []);
 
 	useEffect(() => {
 		if (addSecond != null) {
@@ -52,20 +60,14 @@ const TrackProgressBar = ({ duration, position, isPaused, isActive }) => {
 			// start timer here to add second in ms every second to position
 			startAddSecondsToTrackPosition();
 		}
-	}, [livePosition]);
+	}, [currentTrackProgressTime]);
 
 	useEffect(() => {
 		if (addSecond != null) {
 			resetInterval(addSecond);
 		}
-
-		setDisplayPosition(formatTime(position));
-		setLivePosition(position);
+		setTrackProgressBarTimeandPosition(position);
 	}, [position]);
-
-	useEffect(() => {
-		setDisplayDuration(formatTime(duration));
-	}, [duration]);
 
 	useEffect(() => {
 		// if paused then stop timeout
@@ -73,8 +75,7 @@ const TrackProgressBar = ({ duration, position, isPaused, isActive }) => {
 			if (addSecond != null) {
 				resetInterval(addSecond);
 			}
-		}
-		else {
+		} else if (!isPaused) {
 			// start interval
 			startAddSecondsToTrackPosition();
 		}
@@ -85,7 +86,7 @@ const TrackProgressBar = ({ duration, position, isPaused, isActive }) => {
 			<Slider
 				aria-label="time-indicator"
 				size="small"
-				value={livePosition}
+				value={currentTrackProgressTime}
 				min={0}
 				step={1}
 				max={duration}
@@ -113,7 +114,7 @@ const TrackProgressBar = ({ duration, position, isPaused, isActive }) => {
 					justifySelf: "flex-start",
 				}}
 			>
-				{displayPosition}
+				{displayTrackProgress}
 			</div>
 			<div
 				style={{
@@ -122,7 +123,7 @@ const TrackProgressBar = ({ duration, position, isPaused, isActive }) => {
 					justifySelf: "flex-end",
 				}}
 			>
-				{displayDuration}
+				{maxDurationOfTrack}
 			</div>
 		</div>
 	);
