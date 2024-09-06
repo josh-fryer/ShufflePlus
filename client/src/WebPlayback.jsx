@@ -53,8 +53,8 @@ function WebPlayback() {
 						return;
 					}
 
-					// if the token expired 59 minutes ago or more then refresh token
-					if (accessTokenData.expires_in_time <= Date.now() - 59 * 60000) {
+					// if the token has expired then refresh token
+					if (accessTokenData.expires_in_time <= Date.now()) {
 						console.log(
 							`access token expired at ${new Date(accessTokenData.expires_in_time)}. refreshing token`,
 						);
