@@ -1,12 +1,12 @@
 body {
-  margin: 0;
-  font-family: Montserrat, sans-serif, "Helvetica Neue", Helvetica, Arial;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #262e26;
+	margin: 0;
+	font-family: Montserrat, sans-serif, "Helvetica Neue", Helvetica, Arial;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	background-color: rgb(8 71 30);
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+		monospace;
 }

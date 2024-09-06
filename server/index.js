@@ -9,6 +9,7 @@ const port = process.env.PORT || 8080;
 
 global.access_token = "";
 global.refresh_token = "";
+global.expires_in_time = 0;
 
 dotenv.config();
 
@@ -77,14 +78,22 @@ app.get("/auth/callback", (req, res) => {
 		if (!error && response.statusCode === 200) {
 			access_token = body.access_token;
 			refresh_token = body.refresh_token;
-			//expires_in = body.expires_in;
+			// returns expires_in as seconds. convert to ms to add to Date.now()
+			expires_in_time = Date.now() + (body.expires_in*1000);
 			res.redirect("/");
+		}
+		else {
+			console.log(`Spotify login error: `, error);
 		}
 	});
 });
 
 app.get("/auth/token", (req, res) => {
-	res.json({ access_token: access_token, refresh_token: refresh_token });
+	res.json({ 
+		access_token: access_token, 
+		refresh_token: refresh_token,
+		expires_in_time: expires_in_time
+	});
 });
 
 app.get("/auth/new-token", (req, res) => {
@@ -107,9 +116,18 @@ app.get("/auth/new-token", (req, res) => {
 		if (!error && response.statusCode === 200) {
 			console.log("Successfully refreshed token");
 			access_token = body.access_token;
-			res.json({ access_token: access_token });
+			if(body.refresh_token && body.refresh_token != "") {
+				refresh_token = body.refresh_token
+			}
+			expires_in_time = Date.now() + (body.expires_in*1000);
+
+			res.json({ 
+				access_token: access_token,
+				refresh_token: refresh_token,
+				expires_in_time: expires_in_time
+			 });
 		} else {
-			console.log(`error: ${error}`);
+			console.log(`new token refresh error: ${error}`);
 		}
 	});
 });
@@ -117,6 +135,7 @@ app.get("/auth/new-token", (req, res) => {
 app.get("/auth/logout", (req, res) => {
 	access_token = "";
 	refresh_token = "";
+	expires_in_time = 0;
 });
 
 // serve static assets if in production

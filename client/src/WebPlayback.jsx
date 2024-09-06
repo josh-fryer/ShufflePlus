@@ -18,7 +18,6 @@ var track = {
 
 function WebPlayback() {
 	const context = useContext(UserContext);
-	const [hasWebPlayerInitialized, setHasWebPlayerInitialized] = useState(false);
 	const [is_paused, setPaused] = useState(false);
 	const [is_active, setActive] = useState(false);
 	const [playerObj, setPlayerObj] = useState(undefined);
@@ -30,9 +29,8 @@ function WebPlayback() {
 		timestamp: 0,
 	});
 	const [key, setKey] = useState(Math.random());
-
 	// eslint-disable-next-line no-unused-vars
-	const [avgBgColour, setAvgBgColour] = useState({ r: 46, g: 46, b: 46 });
+	const [avgBgColour, setAvgBgColour] = useState({ r: 15, g: 35, b: 21 });
 
 	useEffect(() => {
 		const script = document.createElement("script");
@@ -48,25 +46,30 @@ function WebPlayback() {
 					// Is called by spotify first to initialise, then after the token expires in 1hr to retrieve a new token
 
 					console.log("GET ACCESS TOKEN for web player SDK");
-					let accessToken = await context.getToken();
+					let accessTokenData = await context.getToken();
 
-					if (!accessToken) {
-						console.error("Token could not be fetched");
+					if (!accessTokenData.access_token) {
+						console.error("Access token could not be retuned");
 						return;
 					}
 
-					if (hasWebPlayerInitialized) {
-						// token has expired. get new token:
-						console.log("Retrieving new access token.");
-						accessToken = await context.refreshToken();
-					} else {
-						setHasWebPlayerInitialized(true);
+					// if the token expired 59 minutes ago or more then refresh token
+					if (accessTokenData.expires_in_time <= Date.now() - 59 * 60000) {
+						console.log(
+							`access token expired at ${new Date(accessTokenData.expires_in_time)}. refreshing token`,
+						);
+						accessTokenData = await context.refreshToken();
 					}
 
 					console.log(
-						"new access token sending to Spotify Player SDK: " + accessToken,
+						"Access token next expires at " +
+							new Date(accessTokenData.expires_in_time),
 					);
-					cb(accessToken);
+					console.log(
+						"Sending access token to Spotify Player SDK: " +
+							accessTokenData.access_token,
+					);
+					cb(accessTokenData.access_token);
 				},
 				volume: 1, // 1 = full volume
 			});
@@ -86,6 +89,7 @@ function WebPlayback() {
 			player.on("authentication_error", ({ message }) => {
 				console.error("Failed to authenticate", message);
 				console.log("playerObj = ", playerObj);
+				context.refreshToken();
 			});
 
 			player.on("playback_error", ({ message }) => {
@@ -181,7 +185,7 @@ function WebPlayback() {
 		padding: 0,
 	};
 
-	if (!is_active) {
+	if (!is_active || currentTrack == null) {
 		return (
 			<>
 				<div className="container">

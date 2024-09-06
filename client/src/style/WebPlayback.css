@@ -54,7 +54,7 @@ button {
 	justify-content: center;
 	height: 100%;
 	width: 100%;
-	background-color: rgb(46, 46, 46);
+	background-color: rgb(15, 35, 21);
 	margin: 0;
 	padding: 0;
 }
@@ -205,40 +205,6 @@ img {
 .right_col {
 	display: flex;
 	flex-direction: column;
-}
-
-/*Dropdown*/
-.dropdown-menuButton {
-	color: black;
-	background-color: white;
-	font-size: 18.72px;
-	font-weight: bolder;
-	border: 2px dotted black;
-	margin: 13px 3px 10px 3px;
-	cursor: pointer;
-}
-
-.dropdown-list ul {
-	font-size: medium;
-	background-color: white;
-	border: 2px solid var(--spotify-primary);
-	border-radius: 5px;
-	list-style-type: none;
-	margin: 0;
-	padding: 5px;
-}
-
-.dropdown-list li {
-	cursor: pointer;
-	padding: 5px;
-	margin: 2px;
-	font-weight: bold;
-}
-
-.dropdown-list li:hover {
-	background-color: #8bd79f;
-	border: 2px solid none;
-	border-radius: 8%;
 }
 
 /* Media queries must be at the end of file to ovverride above */

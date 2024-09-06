@@ -49,6 +49,11 @@ const TrackProgressBar = ({ duration, position, isPaused, isActive }) => {
 
 	useEffect(() => {
 		setMaxDurationOfTrack(formatTime(duration));
+		return () => {
+			setDisplayTrackProgress("00:00");
+			setCurrentTrackProgressTime(0);
+			setMaxDurationOfTrack("00:00");
+		};
 	}, []);
 
 	useEffect(() => {

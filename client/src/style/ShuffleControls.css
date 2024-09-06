@@ -29,6 +29,12 @@
 	flex-wrap: wrap;
 }
 
+.skip_songs_controls_text {
+	font-size: 18.72px;
+	font-weight: bold;
+	margin: 10px 0px 10px 0px;
+}
+
 .controls-button {
 	background-color: var(--spotify-primary);
 	border-radius: 28px;
@@ -121,10 +127,77 @@
 	width: 100%;
 }
 
+/*Dropdown*/
+.dropdown-menuButton {
+	color: black;
+	background-color: white;
+	font-size: 18.72px;
+	font-weight: bold;
+	border: 2px dotted black;
+	cursor: pointer;
+	height: 38px;
+	width: 48px;
+	margin: 4px 5px 13px 5px;
+}
+
+.dropdown-list ul {
+	font-size: medium;
+	background-color: white;
+	border: 2px solid var(--spotify-primary);
+	border-radius: 5px;
+	list-style-type: none;
+	margin: 0;
+	padding: 5px;
+}
+
+.dropdown-list li {
+	cursor: pointer;
+	padding: 5px;
+	margin: 2px;
+	font-weight: bold;
+}
+
+.dropdown-list li:hover {
+	background-color: #8bd79f;
+	border: 2px solid none;
+	border-radius: 8%;
+}
+
 /* Media queries must be at the end of file to ovverride above */
 @media only screen and (max-width: 768px) {
 	/* For mobile phones: */
 	.controls-container-item {
 		width: 90%;
+	}
+}
+
+@media only screen and (max-width: 465px) {
+	/* For mobile phones: */
+	.controls-container-item {
+		width: 90%;
+	}
+
+	.skip_songs_controls_text {
+		font-size: 17px;
+	}
+
+	.dropdown-menuButton {
+		font-size: 17.5px;
+		margin: 4px 5px 3px 5px;
+		height: 33px;
+	}
+}
+
+@media only screen and (max-width: 412px) {
+	#skipText02 {
+		margin: 0px 0px 10px 0px;
+	}
+
+	#skipText01 {
+		margin: 10px 0px 10px 0px;
+	}
+
+	.skip_songs_controls_text {
+		margin: 0px 0px 0px 0px;
 	}
 }

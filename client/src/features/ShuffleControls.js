@@ -290,7 +290,9 @@ const ShuffleControls = ({ nextTrack, currentTrack, isPaused }) => {
 		<div className="controls-container">
 			<div className="controls-container-item">
 				<div className="controls-content">
-					<h3>Skip songs played in the last</h3>
+					<div id="skipText01" className="skip_songs_controls_text">
+						Skip songs played in the last
+					</div>
 					<Dropdown>
 						<MenuButton className="dropdown-menuButton">
 							{weekMultiplier}
@@ -327,7 +329,9 @@ const ShuffleControls = ({ nextTrack, currentTrack, isPaused }) => {
 							</MenuItem>
 						</Menu>
 					</Dropdown>
-					<h3>weeks</h3>
+					<div id="skipText02" className="skip_songs_controls_text">
+						weeks
+					</div>
 					<button
 						className="controls-button"
 						type="button"

@@ -15,9 +15,11 @@ export const UserContextProvider = ({ children }) => {
 			.then((res) => res.json())
 			.then((data) => {
 				setToken(data.access_token);
-				return data.access_token;
+				return data;
 			})
-			.catch((err) => console.log(err));
+			.catch((err) =>
+				console.log("error getting token in context getToken:", err),
+			);
 	};
 
 	const refreshToken = async () => {
@@ -29,11 +31,13 @@ export const UserContextProvider = ({ children }) => {
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				console.log("Set new token in server. Data: ",data);
+				console.log("Set new token in server. Data: ", data);
 				setToken(data.access_token);
-				return data.access_token;
+				return data;
 			})
-			.catch((err) => console.log("error getting new token: ", err));
+			.catch((err) =>
+				console.log("error getting new token in context refreshToken: ", err),
+			);
 	};
 
 	const logout = () => {
@@ -41,7 +45,6 @@ export const UserContextProvider = ({ children }) => {
 		setToken("");
 		// remove tokens in server
 	};
-
 	useEffect(() => {
 		// get token at start
 		getToken();
