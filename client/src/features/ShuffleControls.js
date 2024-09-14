@@ -159,11 +159,11 @@ const ShuffleControls = ({ nextTrack, currentTrack, isPaused }) => {
 		// within the date range so skip track
 		if (trackD > startDateToCompare) {
 			console.log(
-				`skipping > ${track.name}, played less than ${weekMultiplier} weeks ago!`,
+				`SKIPPING > ${track.songName}. Played less than ${weekMultiplier} weeks ago!`,
 			);
 			skipCount++;
 			handleToastOpen(
-				"Track was played less than a week ago. Skipping track...",
+				`Track was played less than ${weekMultiplier} weeks ago. Skipping track...`,
 			);
 			skipTimeout = setTimeout(nextTrack, 2000);
 		}
