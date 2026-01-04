@@ -9,6 +9,8 @@ Try it now @ [ShufflePlus.app](https://shuffleplus.app)
 When you play a track, its details are saved locally offline to your browser storage.
 The track's details are used in optional ShufflePlus functions to skip recently played tracks or tracks related to your selected genres.
 
+<img src="https://github.com/josh-fryer/ShufflePlus/blob/2bc553e9b30e4f72147847a934072a45605a6934/Git_Readme%20images/player%20screenshot%202026-01-04.png" alt="Alt Text" style="width:76%; height:auto;"> <img src="https://github.com/josh-fryer/ShufflePlus/blob/2bc553e9b30e4f72147847a934072a45605a6934/Git_Readme%20images/player%20mobile%20screenshot%202026-01-04.png" alt="Alt Text" style="width:20%; height:auto;"> 
+
 ## Using your own credentials
 
 You will need to register your app and get your own credentials from the
